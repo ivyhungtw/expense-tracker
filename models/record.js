@@ -9,10 +9,14 @@ const recordSchema = new Schema({
     required: true,
   },
   date: {
-    type: Date,
-    default: Date.now,
+    type: String,
+    required: true,
   },
   category: {
+    type: String,
+    required: true,
+  },
+  categoryIcon: {
     type: String,
     required: true,
   },

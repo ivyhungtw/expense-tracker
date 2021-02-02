@@ -3,27 +3,32 @@
     {
       "name": "早餐",
       "category": "餐飲食品",
-      "amount": 60
+      "amount": 60,
+      "date": "2020-01-01"
     },
     {
       "name": "公車",
       "category": "交通出行",
-      "amount": 30
+      "amount": 30,
+      "date": "2020-01-01"
     },
     {
       "name": "電影",
       "category": "休閒娛樂",
-      "amount": 230
+      "amount": 230,
+      "date": "2020-01-01"
     },
     {
       "name": "電費",
       "category": "家居物業",
-      "amount": 1000
+      "amount": 1000,
+      "date": "2020-01-01"
     },
     {
       "name": "秘密",
       "category": "其他",
-      "amount": 10000
+      "amount": 10000,
+      "date": "2020-01-01"
     }
   ]
 }
