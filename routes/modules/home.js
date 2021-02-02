@@ -2,11 +2,15 @@
 const express = require('express')
 const router = express.Router()
 
-// Require modules
+// Require Record model
+const Record = require('../../models/record')
 
 // Set up routes of homepage
 router.get('/', (req, res) => {
-  res.render('index')
+  Record.find()
+    .lean()
+    .then(records => res.render('index', { records }))
+    .catch(error => console.log(error))
 })
 
 // Export
