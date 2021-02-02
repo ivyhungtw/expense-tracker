@@ -2,6 +2,7 @@
 const express = require('express')
 const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
+const methodOverride = require('method-override')
 
 const routes = require('./routes')
 require('./config/mongoose')
@@ -15,6 +16,9 @@ app.set('view engine', 'hbs')
 
 // Set up body-parser
 app.use(bodyParser.urlencoded({ extended: true }))
+
+// Set up method-override
+app.use(methodOverride('_method'))
 
 // Direct request to routes/index.js
 app.use(routes)

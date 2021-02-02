@@ -1,0 +1,22 @@
+<form action="/records/{{ record._id }}?_method=PUT" method="POST">
+
+  <div>
+    <label for="name">Name</label>
+    <input type="text" name="name" value="{{ record.name }}">
+  </div>
+  <div>
+    <label for="date">Date</label>
+    <input type="text" name="date" value="{{ record.date }}">
+  </div>
+  <div>
+    <label for="category">Category</label>
+    <input type="text" name="category" value="{{ record.category }}">
+  </div>
+  <div>
+    <label for="amount">Amount</label>
+    <input type="text" name="amount" value="{{ record.amount }}">
+  </div>
+  <div>
+    <button type="submit">Save</button>
+  </div>
+</form>

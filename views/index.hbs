@@ -7,6 +7,7 @@
   {{#each records}}
     <li>
       {{ this.name }}
+      <a href="/records/{{ this._id }}/edit">Edit</a>
     </li>
   {{/each}}
 </ul>
