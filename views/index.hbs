@@ -8,6 +8,9 @@
     <li>
       {{ this.name }}
       <a href="/records/{{ this._id }}/edit">Edit</a>
+      <form method="POST" action="/records/{{ this._id }}?_method=DELETE" style="display: inline;">
+        <button type="submit">Delete</button>
+      </form>
     </li>
   {{/each}}
 </ul>
