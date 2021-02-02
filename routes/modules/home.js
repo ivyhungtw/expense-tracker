@@ -6,7 +6,7 @@ const router = express.Router()
 
 // Set up routes of homepage
 router.get('/', (req, res) => {
-  res.send('Hi')
+  res.render('index')
 })
 
 // Export
