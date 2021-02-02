@@ -5,6 +5,9 @@ const router = express.Router()
 // Require Record model
 const Record = require('../../models/record')
 
+// Require category list
+const categoryList = require('../../models/seeds/categories.json').results
+
 // Set up routes
 router.get('/new', (req, res) => {
   res.render('new')
@@ -45,6 +48,21 @@ router.delete('/:id', (req, res) => {
   Record.findById(id)
     .then(record => record.remove())
     .then(() => res.redirect('/'))
+    .catch(error => console.log(error))
+})
+
+// Filter
+router.get('/', (req, res) => {
+  const filter = req.query.filter
+  Record.find({ category: filter })
+    .lean()
+    .then(records => {
+      let totalAmount = 0
+      records.forEach(record => {
+        totalAmount += record.amount
+      })
+      res.render('index', { records, totalAmount, categoryList })
+    })
     .catch(error => console.log(error))
 })
 

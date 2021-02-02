@@ -1,6 +1,18 @@
 <a href="/records/new">Create</a>
 
 {{!-- Sort --}}
+<div>
+  <form action="/records">
+    <select name="filter">
+      {{#each categoryList}}
+        <option value="{{ this.name }}">{{ this.name }}</option>
+      {{/each}}
+    </select>
+    <button type="submit">Sort</button>
+  </form>
+</div>
+
+
 {{!-- Tototal amount --}}
 <div>
   Total amount: <h1>{{ totalAmount }}</h1>

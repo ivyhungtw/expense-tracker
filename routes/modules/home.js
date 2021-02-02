@@ -5,6 +5,9 @@ const router = express.Router()
 // Require Record model
 const Record = require('../../models/record')
 
+// Require category list
+const categoryList = require('../../models/seeds/categories.json').results
+
 // Set up routes of homepage
 router.get('/', (req, res) => {
   Record.find()
@@ -14,7 +17,7 @@ router.get('/', (req, res) => {
       records.forEach(record => {
         totalAmount += record.amount
       })
-      res.render('index', { records, totalAmount })
+      res.render('index', { records, totalAmount, categoryList })
     })
     .catch(error => console.log(error))
 })
