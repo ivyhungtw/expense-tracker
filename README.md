@@ -13,6 +13,9 @@
 
 ## 專案畫面
 
+![Home page](/public/photos/index.png)
+![New page](/public/photos/new.png)
+
 ## 安裝與執行步驟
 
 #### 下載專案
