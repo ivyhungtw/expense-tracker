@@ -21,25 +21,26 @@
 {{!-- Tototal amount --}}
 <div class="mt-4 row">
   <div class="col-md-3">Total amount:</div>
-  <div class="col-md-9" style="font-size: 5rem;">{{ totalAmount }}</div>
+  <div class="col-md-9 text-info" style="font-size: 5rem;">{{ totalAmount }}</div>
 </div>
 
 {{!-- Render list --}}
 <ul class="list-group mt-2">
   {{#each records}}
-    <li class="list-group-item">
+    <li class="list-group-item bg-light">
 
       <div class="row">
 
         <div class="col-8 row">
           
-          <div class="col-2"><i class="{{ this.categoryIcon }} fa-3x"></i></div>
+          <div class="col-2"><i class="{{ this.categoryIcon }} fa-3x" style="
+    color: #1dc5e0cf"></i></div>
           <div class="col-7">
             <h5 style="margin-bottom: 0;">{{ this.name }}</h5>
             <small>{{ this.date }}</small>
           </div>
           
-          <div class="col-3 d-flex align-items-center justify-content-end">{{ this.amount }}</div>
+          <div class="col-3 d-flex align-items-center justify-content-end" style="font-weight: 400;font-size: 1.2rem;">{{ this.amount }}</div>
 
         </div>
         {{!-- Buttons --}}
