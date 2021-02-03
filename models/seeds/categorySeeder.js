@@ -5,8 +5,14 @@ const categoryList = require('./categories.json').results
 
 // Success
 db.once('open', () => {
+  const categories = []
   categoryList.forEach(category => {
-    Category.create(category)
+    categories.push(category)
   })
-  console.log('done!')
+  Category.create(categories)
+    .then(() => {
+      console.log('insert data done...')
+      return db.close()
+    })
+    .then(() => console.log('database connection close'))
 })
