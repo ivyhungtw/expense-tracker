@@ -10,7 +10,6 @@ db.once('open', () => {
     const icon = categoryList.find(
       category => category.name === record.category
     ).icon
-    console.log(icon)
     record.categoryIcon = icon
     Record.create(record)
   })

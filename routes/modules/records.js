@@ -61,7 +61,6 @@ router.delete('/:id', (req, res) => {
 router.get('/', (req, res) => {
   const filter = req.query.filter
   if (!filter) return res.redirect('/')
-  console.log(filter)
   Record.find({ category: filter })
     .lean()
     .then(records => {
