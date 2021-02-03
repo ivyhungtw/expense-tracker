@@ -2,13 +2,17 @@
 <div class="mt-4">
   <form action="/records" class="input-group">
     <select class="custom-select" name="filter">
-        <option selected disabled>Choose a category...</option>
-      {{#each categoryList}}
-        <option value="{{ this.name }}">{{ this.name }}</option>
-      {{/each}}
+        <option value="" selected>All</option>
+      
+        <option value="家居物業" {{#if (eq filter '家居物業')}}selected{{/if}}>家居物業</option>
+        <option value="交通出行" {{#if (eq filter '交通出行')}}selected{{/if}}>交通出行</option>
+        <option value="休閒娛樂" {{#if (eq filter '休閒娛樂')}}selected{{/if}}>休閒娛樂</option>
+        <option value="餐飲食品" {{#if (eq filter '餐飲食品')}}selected{{/if}}>餐飲食品</option>
+        <option value="其他" {{#if (eq filter '其他')}}selected{{/if}}>其他</option>
+      
     </select>
     <div class="input-group-append">
-      <button class="btn btn-outline-secondary" type="submit">Sort</button>
+      <button class="btn btn-outline-secondary" type="submit">Filter</button>
     </div>
   </form>
 </div>

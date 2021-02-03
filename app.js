@@ -11,7 +11,18 @@ const PORT = 3000
 const app = express()
 
 // Set up template engine
-app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
+app.engine(
+  'hbs',
+  exphbs({
+    defaultLayout: 'main',
+    extname: '.hbs',
+    helpers: {
+      eq: function (a, b) {
+        return a === b
+      },
+    },
+  })
+)
 app.set('view engine', 'hbs')
 
 // Set up body-parser

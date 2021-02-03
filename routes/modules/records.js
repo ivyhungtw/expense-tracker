@@ -60,6 +60,8 @@ router.delete('/:id', (req, res) => {
 // Filter
 router.get('/', (req, res) => {
   const filter = req.query.filter
+  if (!filter) return res.redirect('/')
+  console.log(filter)
   Record.find({ category: filter })
     .lean()
     .then(records => {
@@ -67,7 +69,7 @@ router.get('/', (req, res) => {
       records.forEach(record => {
         totalAmount += record.amount
       })
-      res.render('index', { records, totalAmount, categoryList })
+      res.render('index', { records, totalAmount, categoryList, filter })
     })
     .catch(error => console.log(error))
 })
