@@ -1,8 +1,11 @@
 // Require mongoose
 const mongoose = require('mongoose')
 
+// Create variable
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/record-list'
+
 // Connect to database
-mongoose.connect('mongodb://localhost/record-list', {
+mongoose.connect(MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
