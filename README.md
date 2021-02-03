@@ -21,13 +21,13 @@
 #### 下載專案
 
 ```
-git clone https://github.com/ivyhungtw/Expense-Tracker.git
+git clone https://github.com/ivyhungtw/expense-tracker.git
 ```
 
 #### 移動至專案資料夾
 
 ```
-cd Expense-Tracker
+cd expense-tracker
 ```
 
 #### 安裝套件
