@@ -2,21 +2,26 @@
 const express = require('express')
 const router = express.Router()
 
-// Require Record model
+// Require Record and Category model
 const Record = require('../../models/record')
 
 // Require category list
 const categoryList = require('../../models/seeds/categories.json').results
 
 // Set up routes
+// New
 router.get('/new', (req, res) => {
-  res.render('new')
+  res.render('new', { categoryList })
 })
 
 router.post('/', (req, res) => {
   const record = req.body
+  const icon = categoryList.find(category => category.name === record.category)
+    .icon
   record.date = record.date || Date.now()
   record.amount = parseFloat(record.amount)
+  record.categoryIcon = icon
+
   Record.create(record)
     .then(() => res.redirect('/'))
     .catch(error => console.log(error))

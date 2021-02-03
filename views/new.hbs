@@ -1,22 +1,46 @@
-<form action="/records" method="POST">
+<div class="container py-5">
 
-  <div>
-    <label for="name">Name</label>
-    <input type="text" name="name">
+  <div class="row">
+    <div class="col-12 col-lg-10 col-xl-8 mx-auto">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title"><i class="fas fa-plus-circle"></i> Add Expense</h5>
+          <hr>
+
+          <form class="row g-3" action="/records" method="POST">
+            {{!-- Name --}}
+            <div class="col-md-12 d-flex align-items-center justify-content-between mb-3">
+              <label for="name" class="col-md-3 col-form-label">Name <span class="required">*</span> </label>
+              <input type="text" name="name" class="form-control" id="name" value="{{ record.name }}" required style="width: 75%;">
+            </div>
+            {{!-- Date --}}
+            <div class="col-md-12 d-flex align-items-center justify-content-between mb-3">
+              <label for="date" class="col-md-3 col-form-label">Date <span class="required">*</span></label>
+              <input type="date" name="date" class="form-control" id="date" value="{{ record.date }}" required style="width: 75%; cursor: pointer;">
+            </div>
+            {{!-- Category --}}
+            <div class="col-md-12 d-flex align-items-center justify-content-between mb-3">
+              <label for="category" class="col-md-3 col-form-label">Category <span class="required">*</span></label>
+              <select class="custom-select" name="category" style="width: 75%;">
+                  <option selected disabled>Choose a category...</option>
+                {{#each categoryList}}
+                  <option value="{{ this.name }}">{{ this.name }}</option>
+                {{/each}}
+              </select>
+            </div>
+            {{!-- Amount --}}
+            <div class="col-md-12 d-flex align-items-center justify-content-between mb-3">
+              <label for="amount" class="col-md-3 col-form-label">Amount <span class="required">*</span></label>
+              <input type="text" name="amount" class="form-control" id="amount" value="{{ record.amount }}" required style="width: 75%;">
+            </div>
+            {{!-- Button --}}
+            <div class="col-12 d-flex justify-content-end">
+              <button class="btn btn-success" type="submit">Create</button>
+            </div>
+          </form>
+        
+        </div>
+      </div>
+    </div>
   </div>
-  <div>
-    <label for="date">Date</label>
-    <input type="text" name="date">
-  </div>
-  <div>
-    <label for="category">Category</label>
-    <input type="text" name="category">
-  </div>
-  <div>
-    <label for="amount">Amount</label>
-    <input type="text" name="amount">
-  </div>
-  <div>
-    <button type="submit">Create</button>
-  </div>
-</form>
+</div>
