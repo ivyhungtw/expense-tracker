@@ -22,11 +22,12 @@ router.post('/', (req, res) => {
     .catch(error => console.log(error))
 })
 
+// Edit
 router.get('/:id/edit', (req, res) => {
   const id = req.params.id
   Record.findById(id)
     .lean()
-    .then(record => res.render('edit', { record }))
+    .then(record => res.render('edit', { record, categoryList }))
     .catch(error => console.log(error))
 })
 
