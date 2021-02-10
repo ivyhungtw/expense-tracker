@@ -68,6 +68,7 @@ router.get('/', (req, res) => {
       records.forEach(record => {
         totalAmount += record.amount
       })
+      totalAmount = new Intl.NumberFormat().format(totalAmount)
       res.render('index', { records, totalAmount, categoryList, filter })
     })
     .catch(error => console.log(error))
