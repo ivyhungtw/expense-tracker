@@ -31,6 +31,9 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // Set up method-override
 app.use(methodOverride('_method'))
 
+// Set up static file
+app.use(express.static('public'))
+
 // Direct request to routes/index.js
 app.use(routes)
 

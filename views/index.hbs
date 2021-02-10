@@ -22,40 +22,31 @@
 </div>
 
 {{!-- Render list --}}
-<ul class="list-group mt-2">
-  {{#each records}}
-    <li class="list-group-item bg-light">
-
-      <div class="row">
-
-        <div class="col-8 row">
-          
-          <div class="col-2 d-flex justify-content-center"><i class="{{ this.categoryIcon }} fa-3x" style="
-    color: #1dc5e0cf"></i></div>
-          <div class="col-7 pl-3">
-            <h5 style="margin-bottom: 0;">{{ this.name }}</h5>
-            <small>{{ this.date }}</small>
-          </div>
-          
-          <div class="col-3 d-flex align-items-center justify-content-end" style="font-weight: 400;font-size: 1.2rem;">{{ this.amount }}</div>
-
-        </div>
-        {{!-- Buttons --}}
-        <div class="col-4 d-flex justify-content-end align-items-center" style="
-    padding-right: 0;">
-          <a class="btn btn-outline-success mr-2" href="/records/{{ this._id }}/edit">Edit</a>
-          <form method="POST" action="/records/{{ this._id }}?_method=DELETE" style="display: inline;">
-            <button class="btn btn-outline-danger" type="submit">Delete</button>
-          </form>
-        </div>
-
-      </div>
-      
-    </li>
+{{#each records}}
+  <div class="row flex-md-nowrap py-2 record">
+    {{!-- Icon --}}
+    <div class="col-2 d-flex justify-content-center align-items-center">
+      <i class="{{ this.categoryIcon }} fa-2x" style="
+    color: #1dc5e0cf"></i>
+    </div>
+    {{!-- Name & date --}}
+    <div class="col-3 pl-3">
+      <h5 style="margin-bottom: 0;">{{ this.name }}</h5>
+      <small>{{ this.date }}</small>
+    </div>
+    {{!-- Amount --}}
+    <div class="col-4 d-flex align-items-center justify-content-end" style="font-weight: 400;font-size: 1.2rem;">
+      {{ this.amount }}
+    </div>
+    {{!-- Buttons --}}
+    <div class="col-3 d-flex justify-content-center align-items-center">
+      <a  href="/records/{{ this._id }}/edit" class="mr-2"><i class="fas fa-edit icon-edit"></i></a>
+      <form method="POST" action="/records/{{ this._id }}?_method=DELETE" style="display: inline;">
+        <button type="submit" style="border: none;background-color: transparent;"><i class="fas fa-trash-alt icon-delete"></i></button>
+      </form>
+    </div>
+  </div>
   {{/each}}
-
-  {{!-- Add Btn --}}
-  <div class="mt-5 d-flex justify-content-center">
+  <div class="my-4 d-flex justify-content-center">
     <a class="btn btn-info" href="/records/new">Add Expense</a>
   </div>
-</ul>
