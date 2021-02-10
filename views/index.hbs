@@ -3,12 +3,10 @@
   <form action="/records" class="input-group">
     <select class="custom-select" name="filter" onchange="submit();">
         <option value="" selected>All</option>
-      
-        <option value="家居物業" {{#if (eq filter '家居物業')}}selected{{/if}}>家居物業</option>
-        <option value="交通出行" {{#if (eq filter '交通出行')}}selected{{/if}}>交通出行</option>
-        <option value="休閒娛樂" {{#if (eq filter '休閒娛樂')}}selected{{/if}}>休閒娛樂</option>
-        <option value="餐飲食品" {{#if (eq filter '餐飲食品')}}selected{{/if}}>餐飲食品</option>
-        <option value="其他" {{#if (eq filter '其他')}}selected{{/if}}>其他</option>
+
+        {{#each categoryList}}
+          <option value="{{ this.name }}" {{#if (eq this.tempCategory this.name)}}selected{{/if}}>{{ this.name }}</option>
+        {{/each}}
       
     </select>
   </form>
