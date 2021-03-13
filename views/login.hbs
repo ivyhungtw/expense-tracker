@@ -1,0 +1,21 @@
+<div class="row my-5">
+  <div class="col-11 col-md-6 m-auto" style="max-width:420px">
+    <div class="card card-body">
+      <h1 class="text-center mt-3">Login</h1>
+      <form action="/users/login" method="POST">
+        <div class="form-group">
+          <label class="col-form-label" for="email">Email</label>
+          <input type="email" id="email" name="email" class="form-control" placeholder="Enter Email" value="{{ email }}">
+        </div>
+        <div class="form-group mt-3">
+          <label class="col-form-label" for="password">Password</label>
+          <input type="password" id="password" name="password" class="form-control" placeholder="Enter Password" value="{{ password }}">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block mt-4">Login</button>
+      </form>
+      <p class="lead mt-4">
+        No Account? <a href="/users/register" style="color: #4592af;">Register</a>
+      </p>
+    </div>
+  </div>
+</div>
