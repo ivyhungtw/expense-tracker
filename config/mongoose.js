@@ -2,7 +2,7 @@
 const mongoose = require('mongoose')
 
 // Create variable
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/record-list'
+const MONGODB_URI = process.env.MONGODB_URI
 
 // Connect to database
 mongoose.connect(MONGODB_URI, {

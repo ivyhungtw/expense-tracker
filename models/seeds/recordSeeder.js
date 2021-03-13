@@ -1,4 +1,8 @@
 // Require related packages
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+
 const db = require('../../config/mongoose')
 const Record = require('../record')
 const recordList = require('./records.json').results
