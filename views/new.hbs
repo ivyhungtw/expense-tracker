@@ -10,17 +10,17 @@
           <form class="row g-3" action="/records" method="POST">
             {{!-- Name --}}
             <div class="col-md-12 d-flex align-items-center justify-content-between mb-3">
-              <label for="name" class="col-md-3 col-form-label">Name <span class="required">*</span> </label>
+              <label for="name" class="col-md-4 col-form-label">Name <span class="required">*</span> </label>
               <input type="text" name="name" class="form-control" id="name" value="{{ record.name }}" required style="width: 75%;">
             </div>
             {{!-- Date --}}
             <div class="col-md-12 d-flex align-items-center justify-content-between mb-3">
-              <label for="date" class="col-md-3 col-form-label">Date <span class="required">*</span></label>
+              <label for="date" class="col-md-4 col-form-label">Date <span class="required">*</span></label>
               <input type="date" name="date" class="form-control" id="date" value="{{ record.date }}" required style="width: 75%; cursor: pointer;">
             </div>
             {{!-- Category --}}
             <div class="col-md-12 d-flex align-items-center justify-content-between mb-3">
-              <label for="category" class="col-md-3 col-form-label">Category <span class="required">*</span></label>
+              <label for="category" class="col-md-4 col-form-label">Category <span class="required">*</span></label>
               <select class="custom-select" name="category" style="width: 75%;">
                   <option selected disabled>Choose a category...</option>
                 {{#each categoryList}}
@@ -30,12 +30,12 @@
             </div>
             {{!-- Merchant --}}
             <div class="col-md-12 d-flex align-items-center justify-content-between mb-3">
-              <label for="merchant" class="col-md-3 col-form-label">Merchant</label>
+              <label for="merchant" class="col-md-4 col-form-label">Merchant</label>
               <input type="text" name="merchant" class="form-control" id="merchant" value="{{ record.merchant }}" required style="width: 75%;">
             </div>
             {{!-- Amount --}}
             <div class="col-md-12 d-flex align-items-center justify-content-between mb-3">
-              <label for="amount" class="col-md-3 col-form-label">Amount <span class="required">*</span></label>
+              <label for="amount" class="col-md-4 col-form-label">Amount <span class="required">*</span></label>
               <input type="text" name="amount" class="form-control" id="amount" value="{{ record.amount }}" required style="width: 75%;">
             </div>
             {{!-- Button --}}
