@@ -9,6 +9,8 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const routes = require('./routes')
+
+const usePassport = require('./config/passport')
 require('./config/mongoose')
 
 const PORT = process.env.PORT
@@ -46,6 +48,9 @@ app.use(methodOverride('_method'))
 
 // Set up static file
 app.use(express.static('public'))
+
+// Call passport function
+usePassport(app)
 
 // Direct request to routes/index.js
 app.use(routes)
