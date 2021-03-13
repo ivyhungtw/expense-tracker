@@ -1,5 +1,6 @@
 // Require packages
 const express = require('express')
+const session = require('express-session')
 const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
@@ -27,6 +28,15 @@ app.engine(
   })
 )
 app.set('view engine', 'hbs')
+
+// Handle session
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+  })
+)
 
 // Set up body-parser
 app.use(bodyParser.urlencoded({ extended: true }))
