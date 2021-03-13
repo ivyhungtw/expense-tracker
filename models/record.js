@@ -24,6 +24,9 @@ const recordSchema = new Schema({
     type: Number,
     required: true,
   },
+  merchant: {
+    type: String,
+  },
 })
 
 // Create and export a model
