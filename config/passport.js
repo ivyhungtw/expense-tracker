@@ -23,7 +23,7 @@ module.exports = app => {
           }
           if (user.password !== password) {
             return done(null, false, {
-              message: 'Email or Password incorrect.',
+              message: 'Incorrect Password',
             })
           }
           return done(null, user)

@@ -2,6 +2,7 @@
 const express = require('express')
 const session = require('express-session')
 const exphbs = require('express-handlebars')
+const flash = require('connect-flash')
 const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
 if (process.env.NODE_ENV !== 'production') {
@@ -52,10 +53,15 @@ app.use(express.static('public'))
 // Call passport function
 usePassport(app)
 
+// Use flash
+app.use(flash())
+
 // Add response local variables scoped to the request
 app.use((req, res, next) => {
   res.locals.isAuthenticated = req.isAuthenticated()
   res.locals.user = req.user
+  res.locals.success_msg = req.flash('success_msg')
+  res.locals.warning_msg = req.flash('warning_msg')
   next()
 })
 

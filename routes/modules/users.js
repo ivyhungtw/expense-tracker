@@ -8,7 +8,11 @@ const User = require('../../models/user')
 // Define routes
 // Login
 router.get('/login', (req, res) => {
-  res.render('login')
+  res.render('login', {
+    error_msg: req.flash('error'),
+    email: req.session.email,
+    password: req.session.password,
+  })
 })
 
 router.post(
@@ -16,6 +20,7 @@ router.post(
   passport.authenticate('local', {
     successRedirect: '/',
     failureRedirect: '/users/login',
+    failureFlash: true,
   })
 )
 
@@ -25,24 +30,22 @@ router.get('/register', (req, res) => {
 })
 
 router.post('/register', (req, res) => {
+  const errors = []
   // Get form data
   const { name, email, password, confirmPassword } = req.body
-
-  // Check if email already exists
+  // Check if user already exists
   User.findOne({ email }).then(user => {
     if (user) {
-      console.log('The email has already been used!')
-      return res.render('register', {
-        name,
-        email,
-        password,
-        confirmPassword,
-      })
+      errors.push({ message: 'The email has been used.' })
     }
     // Check if password and confirmPassword are the same
     if (password !== confirmPassword) {
-      console.log('Password and confirmPassword do not match. ')
+      errors.push({ message: 'Password and confirmPassword do not match.' })
+    }
+    // If the length of errors > 0, return to register page
+    if (errors.length > 0) {
       return res.render('register', {
+        errors,
         name,
         email,
         password,
@@ -52,6 +55,13 @@ router.post('/register', (req, res) => {
     // save to User model
     return User.create({ name, email, password })
       .then(() => {
+        // Save registered email in session to show it on login page
+        req.session.email = req.body.email
+        // Create success message to show on login page
+        req.flash(
+          'success_msg',
+          `${req.body.email} register successfully! Please login.`
+        )
         res.redirect('/users/login')
       })
       .catch(err => console.log(err))
