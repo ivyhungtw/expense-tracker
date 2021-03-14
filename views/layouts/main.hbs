@@ -12,13 +12,22 @@
   <script src="https://kit.fontawesome.com/fc38f96ac0.js" crossorigin="anonymous"></script>
 </head>
 <body>
-  <header>
-    {{!-- nav bar --}}
-    <nav class="navbar navbar-dark" style="
-    background-color: #1c3869;">
-      <a class="navbar-brand" href="/">Expense Tracker</a>
-    </nav>
-
+  <header style="background-color: #1c3869;">
+    {{!-- <div class="container"> --}}
+      {{!-- nav bar --}}
+      <nav class="navbar navbar-dark" >
+        {{!-- brand name --}}
+        <a class="navbar-brand" href="/">Expense Tracker</a>
+        {{!-- button --}}
+        <div>
+        {{#if isAuthenticated}}
+        <a href="/users/logout" class="btn btn-outline-primary" id="loginBtn">Logout</a>
+        {{else}}
+        <a href="/users/login" class="btn btn-outline-primary" id="loginBtn">Login</a>
+        {{/if}}
+      </div>
+      </nav>
+    {{!-- </div> --}}
   </header>
   <main>
     <div class="container" style="max-width: 720px;">
