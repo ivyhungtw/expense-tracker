@@ -15,14 +15,28 @@ router.get('/login', (req, res) => {
   })
 })
 
-router.post(
-  '/login',
-  passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/users/login',
-    failureFlash: true,
-  })
-)
+router.post('/login', function (req, res, next) {
+  // User passport custom callback
+  passport.authenticate('local', function (err, user, info) {
+    if (err) {
+      return next(err)
+    }
+    if (!user) {
+      // Create error message to show on login page
+      req.flash('error', info.message)
+      // Store user email and password in session to show on login page
+      req.session.email = req.body.email
+      req.session.password = req.body.password
+      return res.redirect('/users/login')
+    }
+    req.logIn(user, function (err) {
+      if (err) {
+        return next(err)
+      }
+      return res.redirect('/')
+    })
+  })(req, res, next)
+})
 
 // Register
 router.get('/register', (req, res) => {
@@ -71,6 +85,10 @@ router.post('/register', (req, res) => {
 // Logout
 router.get('/logout', (req, res) => {
   req.logout()
+  req.flash('success_msg', 'logout successfully!')
+  // Reset email & password stored in session
+  req.session.email = ''
+  req.session.password = ''
   res.redirect('/users/login')
 })
 
