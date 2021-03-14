@@ -1,6 +1,8 @@
 // Require Express and Express router
 const express = require('express')
 const router = express.Router()
+
+const bcrypt = require('bcryptjs')
 const passport = require('passport')
 
 const User = require('../../models/user')
@@ -66,8 +68,17 @@ router.post('/register', (req, res) => {
         confirmPassword,
       })
     }
-    // save to User model
-    return User.create({ name, email, password })
+    // Hash the password and create a user
+    return bcrypt
+      .genSalt(10)
+      .then(salt => bcrypt.hash(password, salt))
+      .then(hash =>
+        User.create({
+          name,
+          email,
+          password: hash,
+        })
+      )
       .then(() => {
         // Save registered email in session to show it on login page
         req.session.email = req.body.email
