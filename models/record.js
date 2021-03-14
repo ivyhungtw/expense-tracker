@@ -27,6 +27,12 @@ const recordSchema = new Schema({
   merchant: {
     type: String,
   },
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    index: true,
+    required: true,
+  },
 })
 
 // Create and export a model

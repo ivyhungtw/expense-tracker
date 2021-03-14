@@ -14,11 +14,12 @@ let categoryData
 
 // Set up routes of homepage
 router.get('/', (req, res) => {
+  const userId = req.user._id
   Category.find()
     .lean()
     .then(categories => {
       categoryData = categories
-      Record.find()
+      Record.find({ userId })
         .lean()
         .then(records => {
           let totalAmount = 0

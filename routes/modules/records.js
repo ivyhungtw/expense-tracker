@@ -24,6 +24,7 @@ router.get('/new', (req, res) => {
 
 // Confirm creation
 router.post('/', (req, res) => {
+  const userId = req.user._id
   // Get form data form request body
   const record = req.body
   // Get icon
@@ -34,6 +35,7 @@ router.post('/', (req, res) => {
       record.date = record.date || Date.now()
       record.amount = parseFloat(record.amount)
       record.categoryIcon = icon
+      record.userId = userId
 
       Record.create(record)
         .then(() => res.redirect('/'))
@@ -44,14 +46,15 @@ router.post('/', (req, res) => {
 
 // Edit page
 router.get('/:id/edit', (req, res) => {
-  // Get expense id
+  // Get user id and expense id
+  const userId = req.user._id
   const _id = req.params.id
   // Get category data
   Category.find()
     .lean()
     .then(categories => {
       // Find the record by _id
-      Record.findById(_id)
+      Record.findOne({ _id, userId })
         .lean()
         .then(record => {
           // Save category status for eq function
@@ -68,7 +71,8 @@ router.get('/:id/edit', (req, res) => {
 
 // Confirm editing
 router.put('/:id', (req, res) => {
-  // Get record _id
+  // Get user id and record _id
+  const userId = req.user._id
   const _id = req.params.id
   // Get form data form request body
   const newRecord = req.body
@@ -82,7 +86,7 @@ router.put('/:id', (req, res) => {
       // Change amount type from string to number
       newRecord.amount = parseFloat(newRecord.amount)
       // Find original record data by _id
-      Record.findById(_id)
+      Record.findOne({ _id, userId })
         .then(record => {
           // Reassign new record data and save to model
           record = Object.assign(record, newRecord)
@@ -95,8 +99,9 @@ router.put('/:id', (req, res) => {
 })
 
 router.delete('/:id', (req, res) => {
-  const id = req.params.id
-  Record.findById(id)
+  const userId = req.user._id
+  const _id = req.params.id
+  Record.findOne({ _id, userId })
     .then(record => record.remove())
     .then(() => res.redirect('/'))
     .catch(error => console.log(error))
