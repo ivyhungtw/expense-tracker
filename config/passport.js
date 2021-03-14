@@ -1,6 +1,7 @@
 // Require related packages
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
+const FacebookStrategy = require('passport-facebook').Strategy
 
 const bcrypt = require('bcryptjs')
 
@@ -37,6 +38,36 @@ module.exports = app => {
     })
   )
 
+  // Set up facebook strategy
+  passport.use(
+    new FacebookStrategy(
+      {
+        clientID: process.env.FACEBOOK_ID,
+        clientSecret: process.env.FACEBOOK_SECRET,
+        callbackURL: process.env.FACEBOOK_CALLBACK,
+        profileFields: ['email', 'displayName'],
+      },
+      (accessToken, refreshToken, profile, done) => {
+        const { email, name } = profile._json
+        return User.findOne({ email }).then(user => {
+          // If user already exists in User model, return user
+          if (user) {
+            return done(null, user)
+          }
+          // If user doesn't exist, create a user and save to User model
+          // because password field is required in the model,
+          // we have to generate a random password for it
+          const randomPassword = Math.random().toString(36).slice(-8)
+          return bcrypt
+            .genSalt(10)
+            .then(salt => bcrypt.hash(randomPassword, salt))
+            .then(hash => User.create({ name, email, password: hash }))
+            .then(user => done(null, user))
+            .catch(err => console.log(err))
+        })
+      }
+    )
+  )
   // Configure Passport authenticated session persistence.
   // In order to restore authentication state across HTTP requests, Passport needs to serialize users into and deserialize users out of the session.  The typical implementation of this is as simple as supplying the user ID when serializing, and querying the user record by ID from the database when deserializing.
   passport.serializeUser((user, done) => {
