@@ -1,7 +1,10 @@
-{{!-- Sort --}}
+{{!-- Filter  --}}
 <div class="mt-4">
-  <form action="/records" class="input-group">
-    <select class="custom-select" name="filter" onchange="submit();">
+  <form action="/records" class="input-group" onchange="submit();">
+    {{!-- Date --}}
+    <input type="month" class="form-control" id="date" name="date" min="2018-03" value="{{date}}" >
+    {{!-- Category --}}
+    <select class="custom-select" name="category" >
         <option value="" selected>All</option>
 
         {{#each categoryList}}
@@ -9,6 +12,7 @@
         {{/each}}
       
     </select>
+       
   </form>
 </div>
 

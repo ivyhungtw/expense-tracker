@@ -109,27 +109,40 @@ router.delete('/:id', (req, res) => {
 
 // Filter
 router.get('/', (req, res) => {
-  const filter = req.query.filter
-  if (!filter) return res.redirect('/')
+  const userId = req.user._id
+  // Get filter form data
+  const category = req.query.category
+  const date = req.query.date
+  // If no filter data, return home page
+  if (!category && !date) return res.redirect('/')
+  // Create filter variable
+  const filter = { userId }
+  if (category) filter.category = category
+  if (date) filter.date = new RegExp('^' + date)
+
   Category.find()
     .lean()
     .then(categories => {
-      categories.forEach(category => {
-        category.tempCategory = filter
+      categories.forEach(el => {
+        el.tempCategory = category
       })
-      Record.find({ category: filter })
+      // Render records according to filter
+      Record.find(filter)
         .lean()
         .then(records => {
           let totalAmount = 0
+          // Calculate total amount
           records.forEach(record => {
             totalAmount += record.amount
           })
+          // Format total amount
           totalAmount = new Intl.NumberFormat().format(totalAmount)
           res.render('index', {
             records,
             totalAmount,
             categoryList: categories,
-            filter,
+            date,
+            category,
           })
         })
         .catch(error => console.log(error))
