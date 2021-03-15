@@ -37,8 +37,12 @@
       <small>{{ this.date }}</small>
     </div>
     {{!-- Amount --}}
-    <div class="col-4 d-flex align-items-center justify-content-end" style="font-weight: 400;font-size: 1.2rem;">
-      {{ this.amount }}
+    <div class="col-4 d-flex align-items-center justify-content-end">
+      <div>
+        <h5 style="margin-bottom: 0;font-weight: 400;font-size: 1.2rem;">$ {{ this.amount }}</h5>
+        <small class="text-muted">{{this.merchant}}</small>
+      </div>
+      
     </div>
     {{!-- Buttons --}}
     <div class="col-3 d-flex justify-content-center align-items-center">
