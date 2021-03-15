@@ -2,9 +2,9 @@
 <div class="mt-4">
   <form action="/records" class="input-group" onchange="submit();">
     {{!-- Date --}}
-    <input type="month" class="form-control" id="date" name="date" min="2018-03" value="{{date}}" >
+    <input type="month" class="form-control mr-2" id="date" name="date" min="2020-01" {{#if date}}value="{{date}}"{{/if}} >
     {{!-- Category --}}
-    <select class="custom-select" name="category" >
+    <select class="custom-select ml-2" name="category" >
         <option value="" selected>All</option>
 
         {{#each categoryList}}
