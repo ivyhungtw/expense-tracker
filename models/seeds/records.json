@@ -4,7 +4,8 @@
       "name": "早餐",
       "category": "餐飲食品",
       "amount": 60,
-      "date": "2020-01-01"
+      "date": "2020-01-01",
+      "merchant": "Harbs"
     },
     {
       "name": "公車",
@@ -16,7 +17,8 @@
       "name": "電影",
       "category": "休閒娛樂",
       "amount": 230,
-      "date": "2020-01-01"
+      "date": "2020-01-01",
+      "merchant": "信義威秀"
     },
     {
       "name": "電費",
