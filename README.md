@@ -6,26 +6,35 @@ This project is Live on: https://sleepy-cliffs-84117.herokuapp.com/
 
 ## Features
 
+- Register, login and logout an account
+- Facebook login
 - View all expenses
 - Show total amount of expenses
-- Filter expenses by category
+- Filter expenses by category and month
 - Add an expense
 - Edit an expense
 - Delete an expense
 
 ![Home page](/public/photos/index.png)
+![Login page](/public/photos/login.png)
+![Register page](/public/photos/register.png)
 
-![New page](/public/photos/new.png)
-
-## Prerequisites
+## Prerequisites & Packages
 
 - Node.js v14.15.1
-- Express v4.17.1
-- Express-handlebars v5.2.0
-- mongoDB Community Serve v4.2.12
-- mongoose v5.11.14
-- body-parser v1.19.0
-- method-override v3.0.0
+- Express
+- Express-handlebars
+- mongoDB Community Server
+- mongoose
+- body-parser
+- bcryptjs
+- connect-flash
+- dotenv
+- express-session
+- method-override
+- passport
+- passport-facebook
+- passport-local
 
 ## Installation
 
