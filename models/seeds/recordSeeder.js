@@ -11,38 +11,53 @@ const categoryList = require('./categories.json').results
 
 const User = require('../../models/user')
 
-const SEED_USER = {
-  email: 'root@example.com',
-  password: '123456',
-}
+const SEED_USERS = [
+  {
+    email: 'user1@example.com',
+    password: '12345678',
+  },
+  {
+    email: 'user2@example.com',
+    password: '12345678',
+  },
+]
 
 // Success
-db.once('open', () => {
-  const records = []
-  // Create user
-  bcrypt
-    .genSalt(10)
-    .then(salt => bcrypt.hash(SEED_USER.password, salt))
-    .then(hash =>
-      User.create({
-        email: SEED_USER.email,
-        password: hash,
-      })
-    )
-    .then(user => {
-      recordList.forEach(record => {
-        const icon = categoryList.find(
-          category => category.name === record.category
-        ).icon
-        record.categoryIcon = icon
-        record.userId = user._id
-        records.push(record)
-      })
-      Record.create(records)
-        .then(() => {
-          console.log('insert data done...')
-          return db.close()
+db.once('open', async () => {
+  await new Promise(function (resolve) {
+    SEED_USERS.forEach((seedUser, index) => {
+      // hash the password for seed users
+      // this will return a user model
+      bcrypt
+        .genSalt(10)
+        .then(salt => bcrypt.hash(seedUser.password, salt))
+        .then(hash =>
+          User.create({
+            email: seedUser.email,
+            password: hash,
+          })
+        )
+        .then(user => {
+          // create records owned by the user
+          // this will return a list of 3 records with userId
+          return Promise.all(
+            Array.from({ length: 3 }, (_, i) => {
+              const record = recordList[i + index * 3]
+              const icon = categoryList.find(
+                category => category.name === record.category
+              ).icon
+              record.categoryIcon = icon
+              record.userId = user._id
+              return Record.create(record)
+            })
+          )
         })
-        .then(() => console.log('database connection close'))
+        .then(() => {
+          console.log('done')
+          if (index === SEED_USERS.length - 1) resolve()
+        })
+        .catch(err => console.log(err))
     })
+  })
+  db.close()
 })
