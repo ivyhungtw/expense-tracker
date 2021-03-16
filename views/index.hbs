@@ -47,7 +47,7 @@
     {{!-- Buttons --}}
     <div class="col-3 d-flex justify-content-center align-items-center">
       <a  href="/records/{{ this._id }}/edit" class="mr-2"><i class="fas fa-edit icon-edit"></i></a>
-      <form method="POST" action="/records/{{ this._id }}?_method=DELETE" style="display: inline;">
+      <form method="POST" action="/records/{{ this._id }}?_method=DELETE" style="display: inline;" onsubmit="return checkDelete()">
         <button type="submit" style="border: none;background-color: transparent;"><i class="fas fa-trash-alt icon-delete"></i></button>
       </form>
     </div>
