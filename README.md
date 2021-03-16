@@ -3,6 +3,12 @@
 A simple web application built with Express.js for users to track expenses.
 
 This project is Live on: https://sleepy-cliffs-84117.herokuapp.com/
+You can use the test account below or register an account to login.
+
+```
+email: user1@example.com/user2@example.com
+password: 12345678
+```
 
 ## Features
 
@@ -49,6 +55,17 @@ $ cd expense-tracker
 
 ```
 npm install
+```
+
+#### Add .env file and fill out the information
+
+```
+FACEBOOK_ID=<Your Facebook app ID>
+FACEBOOK_SECRET=<Your Facebook app secret>
+FACEBOOK_CALLBACK=http://localhost:3000/auth/facebook/callback
+SESSION_SECRET=ThisIsMySecret
+MONGODB_URI=mongodb://localhost/todo-list
+PORT=3000
 ```
 
 #### Import seed data
