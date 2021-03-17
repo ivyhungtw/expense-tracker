@@ -110,15 +110,28 @@ router.delete('/:id', (req, res) => {
 // Filter
 router.get('/', (req, res) => {
   const userId = req.user._id
-  // Get filter form data
+  const dateSet = new Set()
   const category = req.query.category
   const date = req.query.date
-  // If no filter data, return home page
-  if (!category && !date) return res.redirect('/')
-  // Create filter variable
+  // Initiate filter variable
   const filter = { userId }
+
+  // If no query string, return home page
+  if (!category && !date) return res.redirect('/')
+  // Add query string to filter
   if (category) filter.category = category
   if (date) filter.date = new RegExp('^' + date)
+
+  // Store all months of records to dateSet
+  Record.find({ userId })
+    .lean()
+    .sort({ date: 'desc' })
+    .then(records => {
+      records.forEach(record => {
+        const recordDate = record.date.slice(0, 7)
+        if (recordDate !== date) dateSet.add(recordDate)
+      })
+    })
 
   Category.find()
     .lean()
@@ -141,8 +154,9 @@ router.get('/', (req, res) => {
             records,
             totalAmount,
             categoryList: categories,
-            date,
+            selectDate: date,
             category,
+            dateSet,
           })
         })
         .catch(error => console.log(error))

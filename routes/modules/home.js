@@ -21,16 +21,24 @@ router.get('/', (req, res) => {
       categoryData = categories
       Record.find({ userId })
         .lean()
+        .sort({ date: 'desc' })
         .then(records => {
+          const dateSet = new Set()
           let totalAmount = 0
           records.forEach(record => {
+            // Calculate total amount
             totalAmount += record.amount
+            // Store month of the record to dateSet
+            dateSet.add(record.date.slice(0, 7))
           })
+          // Format total amount
           totalAmount = new Intl.NumberFormat().format(totalAmount)
+
           res.render('index', {
             records,
             totalAmount,
             categoryList: categoryData,
+            dateSet,
           })
         })
         .catch(error => console.log(error))

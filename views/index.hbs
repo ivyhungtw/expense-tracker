@@ -1,11 +1,20 @@
 {{!-- Filter  --}}
 <div class="mt-4">
   <form action="/records" class="input-group" onchange="submit();">
-    {{!-- Date --}}
-    <input type="month" class="form-control mr-2" id="date" name="date" min="2020-01" {{#if date}}value="{{date}}"{{/if}} >
+    
+    <select class="custom-select ml-2" name="date" >
+        {{#if selectDate}}<option value="{{ selectDate }}" selected>{{ selectDate }}</option>{{/if}}
+        <option value="">All Months</option>
+
+        {{#each dateSet}}
+          <option value="{{ this }}">{{ this }}</option>
+        {{/each}}
+      
+    </select>
+    
     {{!-- Category --}}
     <select class="custom-select ml-2" name="category" >
-        <option value="" selected>All</option>
+        <option value="" selected>All Categories</option>
 
         {{#each categoryList}}
           <option value="{{ this.name }}" {{#if (eq this.tempCategory this.name)}}selected{{/if}}>{{ this.name }}</option>
