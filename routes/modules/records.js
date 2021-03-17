@@ -6,111 +6,141 @@ const router = express.Router()
 const Record = require('../../models/record')
 const Category = require('../../models/category')
 
-// Require category list
-const categoryList = require('../../models/seeds/categories.json').results
-
 // Set up routes
 // Add expense page
-router.get('/new', (req, res) => {
+router.get('/new', async (req, res) => {
+  let categories
+
   // Get category data for category dropdown
-  Category.find()
-    .lean()
-    .then(categories => {
-      // render with new.hbs
-      return res.render('new', { categoryList: categories })
-    })
-    .catch(error => console.log(error))
+  try {
+    categories = await Category.find().lean().exec()
+  } catch (err) {
+    console.warn(err)
+  }
+
+  return res.render('new', { categoryList: categories })
 })
 
 // Confirm creation
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   const userId = req.user._id
   // Get form data form request body
   const record = req.body
-  // Get icon
-  Category.findOne({ name: record.category })
-    .lean()
-    .then(category => {
-      const icon = category.icon
-      record.date = record.date || Date.now()
-      record.amount = parseFloat(record.amount)
-      record.categoryIcon = icon
-      record.userId = userId
 
-      Record.create(record)
-        .then(() => res.redirect('/'))
-        .catch(error => console.log(error))
-    })
-    .catch(error => console.log(error))
+  try {
+    const category = await Category.findOne({ name: record.category })
+      .lean()
+      .exec()
+
+    record.date = record.date || Date.now()
+    record.amount = parseFloat(record.amount)
+    record.categoryIcon = category.icon
+    record.userId = userId
+  } catch (err) {
+    console.warn(err)
+  }
+
+  try {
+    const createRecord = await Record.create(record)
+  } catch (err) {
+    console.warn(err)
+  }
+
+  return res.redirect('/')
 })
 
 // Edit page
-router.get('/:id/edit', (req, res) => {
+router.get('/:id/edit', async (req, res) => {
   // Get user id and expense id
   const userId = req.user._id
   const _id = req.params.id
-  // Get category data
-  Category.find()
-    .lean()
-    .then(categories => {
-      // Find the record by _id
-      Record.findOne({ _id, userId })
-        .lean()
-        .then(record => {
-          // Save category status for eq function
-          categories.forEach(category => {
-            category.tempCategory = record.category
-          })
+  let record
+  let categories
 
-          return res.render('edit', { record, categoryList: categories })
-        })
-        .catch(error => console.log(error))
+  // Find the record by _id and userId
+  try {
+    record = await Record.findOne({ _id, userId }).lean().exec()
+  } catch (err) {
+    console.warn(err)
+  }
+
+  // Get category data
+  try {
+    categories = await Category.find().lean().exec()
+
+    // Save category status of the record for eq function
+    categories.forEach(category => {
+      category.tempCategory = record.category
     })
-    .catch(error => console.log(error))
+  } catch (err) {
+    console.warn(err)
+  }
+
+  return res.render('edit', { record, categoryList: categories })
 })
 
 // Confirm editing
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
   // Get user id and record _id
   const userId = req.user._id
   const _id = req.params.id
   // Get form data form request body
   const newRecord = req.body
-  // Find the icon data from category model
-  Category.findOne({ name: newRecord.category })
-    .lean()
-    .then(category => {
-      const icon = category.icon
-      // Add icon info
-      newRecord.categoryIcon = icon
-      // Change amount type from string to number
-      newRecord.amount = parseFloat(newRecord.amount)
-      // Find original record data by _id
-      Record.findOne({ _id, userId })
-        .then(record => {
-          // Reassign new record data and save to model
-          record = Object.assign(record, newRecord)
-          return record.save()
-        })
-        .then(() => res.redirect('/'))
-        .catch(error => console.log(error))
-    })
-    .catch(error => console.log(error))
+
+  let record
+
+  // Find the icon info from category collection
+  try {
+    const category = await Category.findOne({ name: newRecord.category })
+      .lean()
+      .exec()
+    // Add icon info to the new record
+    newRecord.categoryIcon = category.icon
+    // Change amount type from string to number
+    newRecord.amount = parseFloat(newRecord.amount)
+  } catch (err) {
+    console.warn(err)
+  }
+
+  // Find original record data by _id and userId
+  try {
+    record = await Record.findOne({ _id, userId }).exec()
+    // Reassign new record data and save to record collection
+    record = Object.assign(record, newRecord)
+  } catch (err) {
+    console.warn(err)
+  }
+
+  try {
+    const saveRecord = await record.save()
+  } catch (err) {
+    console.warn(err)
+  }
+
+  // Return to home page
+  return res.redirect('/')
 })
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   const userId = req.user._id
   const _id = req.params.id
-  Record.findOne({ _id, userId })
-    .then(record => record.remove())
-    .then(() => res.redirect('/'))
-    .catch(error => console.log(error))
+
+  try {
+    // Find the record
+    const record = await Record.findOne({ _id, userId }).exec()
+    // Remove the record from database
+    record.remove()
+  } catch (err) {
+    console.warn(err)
+  }
+
+  // Return to home page
+  return res.redirect('/')
 })
 
 // Filter
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   const userId = req.user._id
-  const dateSet = new Set()
   const category = req.query.category
   const date = req.query.date
   // Initiate filter variable
@@ -122,46 +152,60 @@ router.get('/', (req, res) => {
   if (category) filter.category = category
   if (date) filter.date = new RegExp('^' + date)
 
-  // Store all months of records to dateSet
-  Record.find({ userId })
-    .lean()
-    .sort({ date: 'desc' })
-    .then(records => {
-      records.forEach(record => {
-        const recordDate = record.date.slice(0, 7)
-        if (recordDate !== date) dateSet.add(recordDate)
-      })
-    })
+  const dateSet = new Set()
+  let categories
+  let filteredRecords
+  let totalAmount = 0
 
-  Category.find()
-    .lean()
-    .then(categories => {
-      categories.forEach(el => {
-        el.tempCategory = category
-      })
-      // Render records according to filter
-      Record.find(filter)
-        .lean()
-        .then(records => {
-          let totalAmount = 0
-          // Calculate total amount
-          records.forEach(record => {
-            totalAmount += record.amount
-          })
-          // Format total amount
-          totalAmount = new Intl.NumberFormat().format(totalAmount)
-          res.render('index', {
-            records,
-            totalAmount,
-            categoryList: categories,
-            selectDate: date,
-            category,
-            dateSet,
-          })
-        })
-        .catch(error => console.log(error))
+  try {
+    // Find all records of the user
+    const records = await Record.find({ userId })
+      .lean()
+      .sort({ date: 'desc' })
+      .exec()
+
+    // Store all months of records to dateSet
+    records.forEach(record => {
+      const recordDate = record.date.slice(0, 7)
+      if (recordDate !== date) dateSet.add(recordDate)
     })
-    .catch(error => console.log(error))
+  } catch (err) {
+    console.warn(err)
+  }
+
+  try {
+    categories = await Category.find().lean().exec()
+
+    categories.forEach(el => {
+      el.tempCategory = category
+    })
+  } catch (err) {
+    console.warn(err)
+  }
+
+  try {
+    filteredRecords = await Record.find(filter)
+      .lean()
+      .sort({ date: 'desc' })
+      .exec()
+
+    // Calculate total amount
+    filteredRecords.forEach(record => {
+      totalAmount += record.amount
+    })
+    // Format total amount
+    totalAmount = new Intl.NumberFormat().format(totalAmount)
+  } catch (err) {
+    console.warn(err)
+  }
+
+  return res.render('index', {
+    records: filteredRecords,
+    totalAmount,
+    categoryList: categories,
+    selectDate: date,
+    dateSet,
+  })
 })
 
 // Export router
