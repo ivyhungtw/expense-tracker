@@ -50,10 +50,13 @@ router.get('/:id/edit', async (req, res) => {
   try {
     const userId = req.user._id
     const _id = req.params.id
+
     // Find the record by _id and userId
-    const record = await Record.findOne({ _id, userId }).lean().exec()
-    // Get category data
-    const categories = await Category.find().lean().exec()
+    // And get category data
+    const [record, categories] = await Promise.all([
+      Record.findOne({ _id, userId }).lean().exec(),
+      Category.find().lean().exec(),
+    ])
 
     // Save category status of the record for eq function
     categories.forEach(category => {
@@ -74,18 +77,17 @@ router.put('/:id', async (req, res) => {
     const _id = req.params.id
     // Get form data form request body
     const newRecord = req.body
+    // Find the icon info from category collection,
+    // and the original record data by _id and userId
+    let [category, record] = await Promise.all([
+      Category.findOne({ name: newRecord.category }).lean().exec(),
+      Record.findOne({ _id, userId }).exec(),
+    ])
 
-    // Find the icon info from category collection
-    const category = await Category.findOne({ name: newRecord.category })
-      .lean()
-      .exec()
     // Add icon info to the new record
     newRecord.categoryIcon = category.icon
     // Change amount type from string to number
     newRecord.amount = parseFloat(newRecord.amount)
-
-    // Find original record data by _id and userId
-    let record = await Record.findOne({ _id, userId }).exec()
     // Reassign new record data and save to record collection
     record = Object.assign(record, newRecord)
     const saveRecord = await record.save()
@@ -118,6 +120,7 @@ router.get('/', async (req, res) => {
     const category = req.query.category
     const date = req.query.date
     const dateSet = new Set()
+    let totalAmount = 0
 
     // Initiate filter variable
     const filter = { userId }
@@ -127,11 +130,15 @@ router.get('/', async (req, res) => {
     if (category) filter.category = category
     if (date) filter.date = new RegExp('^' + date)
 
-    // Find all records of the user
-    const records = await Record.find({ userId })
-      .lean()
-      .sort({ date: 'desc' })
-      .exec()
+    // Find all records of the user,
+    // all categories object,
+    // and all filtered records
+    const [records, categories, filteredRecords] = await Promise.all([
+      Record.find({ userId }).lean().sort({ date: 'desc' }).exec(),
+      Category.find().lean().exec(),
+      Record.find(filter).lean().sort({ date: 'desc' }).exec(),
+    ])
+
     // Iterate over records
     // Store all months of records to dateSet, except the selected date
     records.forEach(record => {
@@ -139,20 +146,12 @@ router.get('/', async (req, res) => {
       if (recordDate !== date) dateSet.add(recordDate)
     })
 
-    // Find all categories object
-    const categories = await Category.find().lean().exec()
     // Iterate over categories and assign value to tempCategory key
     categories.forEach(el => {
       el.tempCategory = category
     })
 
-    // Find all filtered records
-    const filteredRecords = await Record.find(filter)
-      .lean()
-      .sort({ date: 'desc' })
-      .exec()
-    // Calculate total amount
-    let totalAmount = 0
+    // Iterate over filtered records to calculate total amount
     filteredRecords.forEach(record => {
       totalAmount += record.amount
     })

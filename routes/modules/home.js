@@ -12,13 +12,12 @@ router.get('/', async (req, res) => {
     const userId = req.user._id
     const dateSet = new Set()
     let totalAmount = 0
-    // Find all categories to render category filter
-    const categories = await Category.find().lean().exec()
-    // Find all records of the user to render record list
-    const records = await Record.find({ userId })
-      .lean()
-      .sort({ date: 'desc' })
-      .exec()
+    // Find all categories to render category filter,
+    // and find all records of the user to render record list
+    const [records, categories] = await Promise.all([
+      Record.find({ userId }).lean().sort({ date: 'desc' }).exec(),
+      Category.find().lean().exec(),
+    ])
 
     // Iterate over records
     records.forEach(record => {
