@@ -11,7 +11,7 @@
             {{!-- Name --}}
             <div class="col-md-12 d-flex align-items-center justify-content-between mb-3">
               <label for="name" class="col-md-4 col-form-label">Name <span class="required">*</span> </label>
-              <input type="text" name="name" class="form-control" id="name" value="{{ record.name }}" required style="width: 75%;">
+              <input type="text" name="name" class="form-control" id="name" value="{{ record.name }}" required style="width: 75%;" maxlength="15">
             </div>
             {{!-- Date --}}
             <div class="col-md-12 d-flex align-items-center justify-content-between mb-3">
@@ -37,7 +37,7 @@
             {{!-- Amount --}}
             <div class="col-md-12 d-flex align-items-center justify-content-between mb-3">
               <label for="amount" class="col-md-4 col-form-label">Amount <span class="required">*</span></label>
-              <input type="text" name="amount" class="form-control" id="amount" value="{{ record.amount }}" required style="width: 75%;">
+              <input type="number" name="amount" class="form-control" id="amount" value="{{ record.amount }}" required style="width: 75%;" min="1" max="999999">
             </div>
             {{!-- Button --}}
             <div class="col-12 d-flex justify-content-end">
