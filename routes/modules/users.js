@@ -47,19 +47,38 @@ router.get('/register', (req, res) => {
 
 router.post('/register', (req, res) => {
   const errors = []
+  const emailRule = /^\w+((-\w+)|(\.\w+)|(\+\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/
   // Get form data
   const { name, email, password, confirmPassword } = req.body
+
+  // Check if all required fields are filled out
+  if (!email || !password || !confirmPassword) {
+    errors.push({
+      message: 'Please fill out all required fields marked with *',
+    })
+  }
+  // Check email format
+  if (email.search(emailRule) === -1) {
+    errors.push({ message: 'Please enter the correct email address.' })
+  }
+  // Check if password and confirmPassword are the same
+  if (password !== confirmPassword) {
+    errors.push({ message: 'Password and confirmPassword do not match.' })
+  }
+  // If the length of errors > 0, return to register page
+  if (errors.length > 0) {
+    return res.render('register', {
+      errors,
+      name,
+      email,
+      password,
+      confirmPassword,
+    })
+  }
   // Check if user already exists
   User.findOne({ email }).then(user => {
     if (user) {
       errors.push({ message: 'The email has been used.' })
-    }
-    // Check if password and confirmPassword are the same
-    if (password !== confirmPassword) {
-      errors.push({ message: 'Password and confirmPassword do not match.' })
-    }
-    // If the length of errors > 0, return to register page
-    if (errors.length > 0) {
       return res.render('register', {
         errors,
         name,
@@ -68,6 +87,7 @@ router.post('/register', (req, res) => {
         confirmPassword,
       })
     }
+
     // Hash the password and create a user
     return bcrypt
       .genSalt(10)
