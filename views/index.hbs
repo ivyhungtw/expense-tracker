@@ -7,22 +7,21 @@
         {{!-- Date --}}
         <div class="col-sm-6 mb-3">
           <select class="custom-select ml-2" name="date" >
-              {{#if selectDate}}<option value="{{ selectDate }}" selected>{{ selectDate }}</option>{{/if}}
               <option value="">All Months</option>
 
               {{#each dateSet}}
-                <option value="{{ this }}">{{ this }}</option>
-              {{/each}}
-            
+                <option value="{{ this }}" {{#if (eq ../selectDate this)}}selected{{/if}}>{{ this }}</option>
+              {{/each}}        
           </select>
         </div>
+
         {{!-- Category --}}
         <div class="col-sm-6">
           <select class="custom-select ml-2" name="category" >
               <option value="" selected>All Categories</option>
 
               {{#each categoryList}}
-                <option value="{{ this.name }}" {{#if (eq this.tempCategory this.name)}}selected{{/if}}>{{ this.name }}</option>
+                <option value="{{ this.name }}" {{#if (eq ../selectCategory this.name)}}selected{{/if}}>{{ this.name }}</option>
               {{/each}}
             
           </select>

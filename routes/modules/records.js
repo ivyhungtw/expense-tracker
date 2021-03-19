@@ -143,16 +143,10 @@ router.get('/', async (req, res) => {
       Record.find(filter).lean().sort({ date: 'desc' }).exec(),
     ])
 
-    // Iterate over records
-    // Store all months of records to dateSet, except the selected date
+    // Iterate over all records,
+    // and store different months of years to render year-month filter
     records.forEach(record => {
-      const recordDate = record.date.slice(0, 7)
-      if (recordDate !== date) dateSet.add(recordDate)
-    })
-
-    // Iterate over categories and assign value to tempCategory key
-    categories.forEach(el => {
-      el.tempCategory = category
+      dateSet.add(record.date.slice(0, 7))
     })
 
     // Iterate over filtered records to calculate total amount
@@ -165,6 +159,7 @@ router.get('/', async (req, res) => {
     return res.render('index', {
       records: filteredRecords,
       totalAmount,
+      selectCategory: category,
       categoryList: categories,
       selectDate: date,
       dateSet,
