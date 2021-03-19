@@ -13,7 +13,7 @@ router.get('/new', async (req, res) => {
     // Get category data for category dropdown
     const categories = await Category.find().lean().exec()
 
-    return res.render('new', { categoryList: categories })
+    return res.render('new', { categoryList: categories, formCSS: true })
   } catch (err) {
     console.warn(err)
   }
@@ -63,7 +63,11 @@ router.get('/:id/edit', async (req, res) => {
       category.tempCategory = record.category
     })
 
-    return res.render('edit', { record, categoryList: categories })
+    return res.render('edit', {
+      record,
+      categoryList: categories,
+      formCSS: true,
+    })
   } catch (err) {
     console.warn(err)
   }
@@ -164,6 +168,7 @@ router.get('/', async (req, res) => {
       categoryList: categories,
       selectDate: date,
       dateSet,
+      indexCSS: true,
     })
   } catch (err) {
     console.warn(err)

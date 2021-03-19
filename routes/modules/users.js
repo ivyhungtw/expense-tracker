@@ -14,6 +14,7 @@ router.get('/login', (req, res) => {
     error_msg: req.flash('error'),
     email: req.session.email,
     password: req.session.password,
+    formCSS: true,
   })
 })
 
@@ -42,7 +43,7 @@ router.post('/login', function (req, res, next) {
 
 // Register
 router.get('/register', (req, res) => {
-  res.render('register', { email: req.session.email })
+  res.render('register', { email: req.session.email, formCSS: true })
 })
 
 router.post('/register', async (req, res) => {
@@ -74,6 +75,7 @@ router.post('/register', async (req, res) => {
       email,
       password,
       confirmPassword,
+      formCSS: true,
     })
   }
 
@@ -116,6 +118,7 @@ router.post('/register', async (req, res) => {
       email,
       password,
       confirmPassword,
+      formCSS: true,
     })
   }
 })

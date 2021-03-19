@@ -9,9 +9,13 @@
   {{!-- Main css --}}
   <link rel="stylesheet" href="/stylesheets/main.css">
   {{!-- Index css --}}
-  <link rel="stylesheet" href="/stylesheets/index.css">
+  {{#if indexCSS}}
+    <link rel="stylesheet" href="/stylesheets/index.css">
+  {{/if}}
   {{!-- Form css --}}
-  <link rel="stylesheet" href="/stylesheets/form.css">
+  {{#if formCSS}}
+    <link rel="stylesheet" href="/stylesheets/form.css">
+  {{/if}}
   {{!-- Font awesome --}}
   <script src="https://kit.fontawesome.com/fc38f96ac0.js" crossorigin="anonymous"></script>
 </head>

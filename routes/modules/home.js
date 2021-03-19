@@ -35,6 +35,7 @@ router.get('/', async (req, res) => {
       totalAmount,
       categoryList: categories,
       dateSet,
+      indexCSS: true,
     })
   } catch (err) {
     console.warn(err)
