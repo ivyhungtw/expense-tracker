@@ -18,7 +18,7 @@ router.get('/login', (req, res) => {
 })
 
 router.post('/login', function (req, res, next) {
-  // User passport custom callback
+  // Use passport custom callback
   passport.authenticate('local', function (err, user, info) {
     if (err) {
       return next(err)
@@ -42,14 +42,15 @@ router.post('/login', function (req, res, next) {
 
 // Register
 router.get('/register', (req, res) => {
-  res.render('register')
+  res.render('register', { email: req.session.email })
 })
 
-router.post('/register', (req, res) => {
+router.post('/register', async (req, res) => {
   const errors = []
   const emailRule = /^\w+((-\w+)|(\.\w+)|(\+\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/
   // Get form data
   const { name, email, password, confirmPassword } = req.body
+  req.session.password = ''
 
   // Check if all required fields are filled out
   if (!email || !password || !confirmPassword) {
@@ -75,42 +76,48 @@ router.post('/register', (req, res) => {
       confirmPassword,
     })
   }
-  // Check if user already exists
-  User.findOne({ email }).then(user => {
-    if (user) {
-      errors.push({ message: 'The email has been used.' })
-      return res.render('register', {
-        errors,
-        name,
-        email,
-        password,
-        confirmPassword,
-      })
-    }
 
-    // Hash the password and create a user
-    return bcrypt
-      .genSalt(10)
-      .then(salt => bcrypt.hash(password, salt))
-      .then(hash =>
-        User.create({
-          name,
-          email,
-          password: hash,
-        })
+  try {
+    // After passing validation,
+    // check if the email already exists in the user collection
+    const user = await User.findOne({ email }).exec()
+    // If user exits, redirect to register page
+    if (user) {
+      req.session.email = email
+      req.flash(
+        'warning_msg',
+        'A user with this email already exists. Choose a different address or login directly.'
       )
-      .then(() => {
-        // Save registered email in session to show it on login page
-        req.session.email = req.body.email
-        // Create success message to show on login page
-        req.flash(
-          'success_msg',
-          `${req.body.email} register successfully! Please login.`
-        )
-        res.redirect('/users/login')
-      })
-      .catch(err => console.log(err))
-  })
+      return res.redirect('/users/register')
+    }
+    // If not, generate hashed password,
+    // and store user into user collection
+    const salt = await bcrypt.genSalt(10)
+    const hash = await bcrypt.hash(password, salt)
+    await User.create({
+      name,
+      email,
+      password: hash,
+    })
+
+    // Save registered email in session to show it on login page
+    req.session.email = email
+    // Create success message to show on login page
+    req.flash(
+      'success_msg',
+      `${req.body.email} register successfully! Please login.`
+    )
+    return res.redirect('/users/login')
+  } catch (err) {
+    console.warn(err)
+    res.render('register', {
+      errors,
+      name,
+      email,
+      password,
+      confirmPassword,
+    })
+  }
 })
 
 // Logout
