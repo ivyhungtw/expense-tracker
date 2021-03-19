@@ -11,6 +11,7 @@ const categoryList = require('./categories.json').results
 
 const User = require('../../models/user')
 
+const userRecordCount = 3
 const SEED_USERS = [
   {
     email: 'user1@example.com',
@@ -41,8 +42,8 @@ db.once('open', async () => {
           // create records owned by the user
           // this will return a list of 3 records with userId
           return Promise.all(
-            Array.from({ length: 3 }, (_, i) => {
-              const record = recordList[i + index * 3]
+            Array.from({ length: userRecordCount }, (_, i) => {
+              const record = recordList[i + index * userRecordCount]
               const icon = categoryList.find(
                 category => category.name === record.category
               ).icon
