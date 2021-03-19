@@ -1,0 +1,12 @@
+.form-container {
+  max-width: 480px;
+}
+
+.field-required {
+  color: red;
+}
+
+.form-date,
+.custom-select {
+  cursor: pointer;
+}

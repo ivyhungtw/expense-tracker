@@ -1,5 +1,5 @@
 <div class="row my-5">
-  <div class="col-11 col-md-6 m-auto" style="max-width:420px">
+  <div class="col-11 col-md-8 mx-auto form-container">
     <div class="card card-body">
       <h1 class="text-center mt-3">Register</h1>
       {{> message}}
@@ -9,15 +9,15 @@
           <input type="text" id="name" name="name" class="form-control" placeholder="Enter Name" value="{{ name }}">
         </div>
         <div class="form-group mt-3">
-          <label for="email">Email<span style="color: red;">*</span> </label>
+          <label for="email">Email<span class="field-required">*</span> </label>
           <input type="email" id="email" name="email" class="form-control" placeholder="Enter Email" value="{{ email }}" required>
         </div>
         <div class="form-group mt-3">
-          <label for="password">Password<span style="color: red;">*</span></label>
+          <label for="password">Password<span class="field-required">*</span></label>
           <input type="password" id="password" name="password" class="form-control" placeholder="Enter Password" value="{{ password }}" minlength="6" maxlength="20" required>
         </div>
         <div class="form-group mt-3">
-          <label for="confirmPassword">Confirm Password<span style="color: red;">*</span></label>
+          <label for="confirmPassword">Confirm Password<span class="field-required">*</span></label>
           <input type="password" id="confirmPassword" name="confirmPassword" class="form-control"
             placeholder="Confirm Password" value="{{ confirmPassword }}" minlength="6" maxlength="20" required>
         </div>
@@ -25,7 +25,7 @@
         <a href="/auth/facebook" class="btn btn-info btn-block">Facebook Login</a>
       </form>
       <p class="lead mt-4">
-        Already have an account? <a href="/users/login" style="color: #4592af;">Login</a>
+        Already have an account? <a href="/users/login">Login</a>
       </p>
     </div>
   </div>

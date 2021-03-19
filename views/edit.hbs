@@ -1,51 +1,48 @@
-<div class="container py-5">
+<div class="row py-5">
+  <div class="col-12 col-lg-10 col-xl-8 mx-auto form-container">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title"><i class="fas fa-edit"></i> Edit Expense</h5>
+        <hr>
 
-  <div class="row">
-    <div class="col-12 col-lg-10 col-xl-8 mx-auto">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title"><i class="fas fa-edit"></i> Edit Expense</h5>
-          <hr>
+        <form class="row g-3" action="/records/{{ record._id }}?_method=PUT" method="POST">
+          {{!-- Name --}}
+          <div class="col-md-12 row mb-3 ml-1 mr-4">
+            <label for="name" class="col-md-4 col-form-label">Name<span class="field-required">*</span> </label>
+            <input type="text" name="name" class="form-control col-md-8" id="name" value="{{ record.name }}" required maxlength="15">
+          </div>
+          {{!-- Date --}}
+          <div class="col-md-12 row mb-3 ml-1 mr-4">
+            <label for="date" class="col-md-4 col-form-label">Date<span class="field-required">*</span></label>
+            <input type="date" name="date" class="form-control col-md-8" id="date" value="{{ record.date }}" required>
+          </div>
+          {{!-- Category --}}
+          <div class="col-md-12 row mb-3 ml-1 mr-4">
+            <label for="category" class="col-md-4 col-form-label">Category<span class="field-required">*</span></label>
+            <select class="custom-select col-md-8" name="category">
 
-          <form class="row g-3" action="/records/{{ record._id }}?_method=PUT" method="POST">
-            {{!-- Name --}}
-            <div class="col-md-12 d-flex align-items-center justify-content-between mb-3">
-              <label for="name" class="col-md-4 col-form-label">Name <span class="required">*</span> </label>
-              <input type="text" name="name" class="form-control" id="name" value="{{ record.name }}" required style="width: 75%;" maxlength="15">
-            </div>
-            {{!-- Date --}}
-            <div class="col-md-12 d-flex align-items-center justify-content-between mb-3">
-              <label for="date" class="col-md-4 col-form-label">Date <span class="required">*</span></label>
-              <input type="date" name="date" class="form-control" id="date" value="{{ record.date }}" required style="width: 75%; cursor: pointer;">
-            </div>
-            {{!-- Category --}}
-            <div class="col-md-12 d-flex align-items-center justify-content-between mb-3">
-              <label for="category" class="col-md-4 col-form-label">Category <span class="required">*</span></label>
-              <select class="custom-select" name="category" style="width: 75%;">
-
-                {{#each categoryList}}
-                  <option value="{{ this.name }}" {{#if (eq this.tempCategory this.name)}}selected{{/if}}>{{ this.name }}</option>
-                {{/each}}
-                 
-              </select>
-            </div>
-            {{!-- Merchant --}}
-            <div class="col-md-12 d-flex align-items-center justify-content-between mb-3">
-              <label for="merchant" class="col-md-4 col-form-label">Merchant</label>
-              <input type="text" name="merchant" class="form-control" id="merchant" value="{{ record.merchant }}" style="width: 75%;">
-            </div>
-            {{!-- Amount --}}
-            <div class="col-md-12 d-flex align-items-center justify-content-between mb-3">
-              <label for="amount" class="col-md-4 col-form-label">Amount <span class="required">*</span></label>
-              <input type="number" name="amount" class="form-control" id="amount" value="{{ record.amount }}" required style="width: 75%;" min="1" max="999999">
-            </div>
-            {{!-- Button --}}
-            <div class="col-12 d-flex justify-content-end">
-              <button class="btn btn-success" type="submit">Save</button>
-            </div>
-          </form>
-        
-        </div>
+              {{#each categoryList}}
+                <option value="{{ this.name }}" {{#if (eq this.tempCategory this.name)}}selected{{/if}}>{{ this.name }}</option>
+              {{/each}}
+                
+            </select>
+          </div>
+          {{!-- Merchant --}}
+          <div class="col-md-12 row mb-3 ml-1 mr-4">
+            <label for="merchant" class="col-md-4 col-form-label">Merchant</label>
+            <input type="text" name="merchant" class="form-control col-md-8" id="merchant" value="{{ record.merchant }}">
+          </div>
+          {{!-- Amount --}}
+          <div class="col-md-12 row mb-3 ml-1 mr-4">
+            <label for="amount" class="col-md-4 col-form-label">Amount<span class="field-required">*</span></label>
+            <input type="number" name="amount" class="form-control col-md-8" id="amount" value="{{ record.amount }}" required min="1" max="999999">
+          </div>
+          {{!-- Button --}}
+          <div class="col-md-12 d-flex justify-content-end mr-4">
+            <button class="btn btn-success" type="submit">Save</button>
+          </div>
+        </form>
+      
       </div>
     </div>
   </div>

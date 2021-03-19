@@ -1,20 +1,7 @@
-/* List */
-.record:nth-child(odd) {
-  background-color: aliceblue;
+header {
+  background-color: #1c3869;
 }
 
-.icon-delete {
-  color: gray;
-}
-
-.icon-edit {
-  color: #17a2b8;
-}
-
-.icon-delete:hover {
-  color: rgb(95, 95, 95);
-}
-
-.icon-edit:hover {
-  color: #0f7888;
+.container {
+  max-width: 720px;
 }

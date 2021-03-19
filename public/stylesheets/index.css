@@ -1,0 +1,48 @@
+/* List */
+.record:nth-child(odd) {
+  background-color: aliceblue;
+}
+
+.icon-delete {
+  color: gray;
+}
+
+.icon-edit {
+  color: #17a2b8;
+}
+
+.icon-delete:hover {
+  color: rgb(95, 95, 95);
+}
+
+.icon-edit:hover {
+  color: #0f7888;
+}
+
+/* Total amount */
+.total-amount {
+  font-size: 5rem;
+}
+
+.record-icon {
+  color: #1dc5e0cf;
+}
+
+.record-name {
+  margin-bottom: 0;
+}
+
+.record-amount {
+  margin-bottom: 0;
+  font-weight: 400;
+  font-size: 1.2rem;
+}
+
+.record-delete {
+  display: inline;
+}
+
+.record-deleteBtn {
+  border: none;
+  background-color: transparent;
+}
