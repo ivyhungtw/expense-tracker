@@ -2,6 +2,7 @@
 const express = require('express')
 const session = require('express-session')
 const exphbs = require('express-handlebars')
+
 const flash = require('connect-flash')
 const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
@@ -13,6 +14,7 @@ const routes = require('./routes')
 
 const usePassport = require('./config/passport')
 require('./config/mongoose')
+require('./utils/handlebars-helper')
 
 const PORT = process.env.PORT
 const app = express()
@@ -23,11 +25,6 @@ app.engine(
   exphbs({
     defaultLayout: 'main',
     extname: '.hbs',
-    helpers: {
-      eq: function (a, b) {
-        return a === b
-      },
-    },
   })
 )
 app.set('view engine', 'hbs')
