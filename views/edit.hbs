@@ -19,10 +19,10 @@
           {{!-- Category --}}
           <div class="col-md-12 row mb-3 ml-1 mr-4">
             <label for="category" class="col-md-4 col-form-label">Category<span class="field-required">*</span></label>
-            <select class="custom-select col-md-8" name="category">
+            <select class="custom-select col-md-8" name="categoryId">
 
               {{#each categoryList}}
-                <option value="{{ this.name }}" {{#if (eq ../selectedCategory this.name)}}selected{{/if}}>{{ this.name }}</option>
+                <option value="{{ this._id }}" {{#if (eq ../record.categoryId.name this.name)}}selected{{/if}}>{{ this.name }}</option>
               {{/each}}
                 
             </select>

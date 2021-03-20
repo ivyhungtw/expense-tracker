@@ -25,17 +25,9 @@ router.get('/new', async (req, res) => {
 router.post('/', async (req, res) => {
   try {
     const userId = req.user._id
-    const record = req.body
-
-    // Find category of the record
-    const category = await Category.findOne({ name: record.category })
-      .lean()
-      .exec()
-    // Reassign the record's categoryIcon attribute
-    record.categoryIcon = category.icon
 
     // Save the record to record collection
-    await Record.create({ ...record, userId })
+    await Record.create({ ...req.body, userId })
 
     return res.redirect('/')
   } catch (err) {
@@ -48,8 +40,8 @@ router.get('/:id/edit', async (req, res) => {
   try {
     const userId = req.user._id
     const _id = req.params.id
-    const [record, categories] = await Promise.all([
-      Record.findOne({ _id, userId }).lean().exec(),
+    const [record, categoryList] = await Promise.all([
+      Record.findOne({ _id, userId }).populate('categoryId').lean().exec(),
       Category.find().lean().exec(),
     ])
 
@@ -57,8 +49,7 @@ router.get('/:id/edit', async (req, res) => {
 
     return res.render('edit', {
       record,
-      selectedCategory: record.category,
-      categoryList: categories,
+      categoryList,
       formCSS: true,
     })
   } catch (err) {
@@ -72,17 +63,9 @@ router.put('/:id', async (req, res) => {
     // Get user id and record _id
     const userId = req.user._id
     const _id = req.params.id
-    // Get form data form request body
-    const newRecord = req.body
-    // Find the icon info from category collection,
-    // and the original record data by _id and userId
-    let [category, record] = await Promise.all([
-      Category.findOne({ name: newRecord.category }).lean().exec(),
-      Record.findOne({ _id, userId }).exec(),
-    ])
-
-    // Add icon info to the new record
-    newRecord.categoryIcon = category.icon
+    const newRecord = { ...req.body, userId }
+    // Find the original record by _id and userId
+    let record = await Record.findOne({ _id, userId }).exec()
 
     // Reassign new record data and save to record collection
     record = Object.assign(record, newRecord)
@@ -112,18 +95,27 @@ router.delete('/:id', async (req, res) => {
 // Filter
 router.get('/', async (req, res) => {
   try {
-    const userId = req.user._id
+    // Get data from request and model
     const selectedDate = req.query.date
     const selectedCategory = req.query.category
-    const monthOfYearSet = new Set()
-    let totalAmount = 0
+    const userId = req.user._id
+    const monthOfYearSet = req.session.monthOfYearSet.split(' ')
+    const categoryList = await Category.find().lean().exec()
 
-    // Initiate filter variable
+    // Initiate variables
+    let totalAmount = 0
     const filter = { userId }
+
     // If there is no query string, return to home page
     if (!selectedCategory && !selectedDate) return res.redirect('/')
+
     // Add query string to filter
-    if (selectedCategory) filter.category = selectedCategory
+    if (selectedCategory) {
+      const category = categoryList.find(
+        category => category.name === selectedCategory
+      )
+      filter.categoryId = category._id
+    }
     if (selectedDate) {
       const [year, month] = selectedDate.split('-')
       const startDate = new Date(selectedDate)
@@ -134,23 +126,13 @@ router.get('/', async (req, res) => {
       }
     }
 
-    const [records, categoryList, filteredRecords] = await Promise.all([
-      Record.find({ userId }).lean().sort({ date: 'desc' }).exec(),
-      Category.find().lean().exec(),
-      Record.find(filter).lean().sort({ date: 'desc' }).exec(),
-    ])
-
-    // Iterate over all records,
-    // and store different months of years to render year-month filter
-    records.forEach(record => {
-      const date = moment.utc(record.date)
-      monthOfYearSet.add(date.format('YYYY-MM'))
-      record.date = date.format('YYYY-MM-DD')
-    })
-
-    // Iterate over filtered records
-    // to calculate total amount,
-    // and reassign date format to render record list
+    // Filter records to render record list
+    const filteredRecords = await Record.find(filter)
+      .populate('categoryId')
+      .lean()
+      .sort({ date: 'desc' })
+      .exec()
+    // Calculate total amount, and reassign date format
     filteredRecords.forEach(record => {
       totalAmount += record.amount
       record.date = moment.utc(record.date).format('YYYY-MM-DD')

@@ -1,28 +1,23 @@
 {
   "results": [
     {
-      "name": "家居物業",
-      "name_en": "home",
+      "name": "Home",
       "icon": "fas fa-home"
     },
     {
-      "name": "交通出行",
-      "name_en": "transportation",
+      "name": "Transportation",
       "icon": "fas fa-shuttle-van"
     },
     {
-      "name": "休閒娛樂",
-      "name_en": "entertainment",
+      "name": "Entertainment",
       "icon": "fas fa-grin-beam"
     },
     {
-      "name": "餐飲食品",
-      "name_en": "food",
+      "name": "Food",
       "icon": "fas fa-utensils"
     },
     {
-      "name": "其他",
-      "name_en": "other",
+      "name": "Other",
       "icon": "fas fa-pen"
     }
   ]

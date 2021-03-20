@@ -7,9 +7,9 @@ if (process.env.NODE_ENV !== 'production') {
 const db = require('../../config/mongoose')
 const Record = require('../record')
 const recordList = require('./records.json').results
-const categoryList = require('./categories.json').results
 
 const User = require('../../models/user')
+const Category = require('../../models/category')
 
 const userRecordCount = 3
 const SEED_USERS = [
@@ -42,12 +42,13 @@ db.once('open', async () => {
           // create records owned by the user
           // this will return a list of 3 records with userId
           return Promise.all(
-            Array.from({ length: userRecordCount }, (_, i) => {
+            Array.from({ length: userRecordCount }, async (_, i) => {
               const record = recordList[i + index * userRecordCount]
-              const icon = categoryList.find(
-                category => category.name === record.category
-              ).icon
-              record.categoryIcon = icon
+              const category = await Category.findOne({ name: record.category })
+                .lean()
+                .exec()
+
+              record.categoryId = category._id
               record.userId = user._id
               return Record.create(record)
             })

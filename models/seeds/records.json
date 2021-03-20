@@ -2,39 +2,39 @@
   "results": [
     {
       "name": "早餐",
-      "category": "餐飲食品",
+      "category": "Food",
       "amount": 60,
       "date": "2020-01-01",
       "merchant": "Harbs"
     },
     {
       "name": "公車",
-      "category": "交通出行",
+      "category": "Transportation",
       "amount": 30,
       "date": "2020-01-01"
     },
     {
       "name": "電影",
-      "category": "休閒娛樂",
+      "category": "Entertainment",
       "amount": 230,
       "date": "2020-01-01",
       "merchant": "信義威秀"
     },
     {
       "name": "電費",
-      "category": "家居物業",
+      "category": "Home",
       "amount": 1000,
       "date": "2020-01-01"
     },
     {
       "name": "秘密",
-      "category": "其他",
+      "category": "Other",
       "amount": 10000,
       "date": "2020-01-01"
     },
     {
       "name": "晚餐",
-      "category": "餐飲食品",
+      "category": "Food",
       "amount": 1800,
       "date": "2021-03-01",
       "merchant": "響食天堂"

@@ -16,7 +16,11 @@ router.get('/', async (req, res) => {
     const monthOfYearSet = new Set()
     let totalAmount = 0
     const [records, categoryList] = await Promise.all([
-      Record.find({ userId }).lean().sort({ date: 'desc' }).exec(),
+      Record.find({ userId })
+        .populate('categoryId')
+        .lean()
+        .sort({ date: 'desc' })
+        .exec(),
       Category.find().lean().exec(),
     ])
 
@@ -30,6 +34,9 @@ router.get('/', async (req, res) => {
       monthOfYearSet.add(date.format('YYYY-MM'))
       record.date = date.format('YYYY-MM-DD')
     })
+
+    // Save months of years to session for later use
+    req.session.monthOfYearSet = [...monthOfYearSet].join(' ')
 
     // Format total amount
     totalAmount = new Intl.NumberFormat().format(totalAmount)
