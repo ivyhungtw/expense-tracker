@@ -6,35 +6,39 @@ const router = express.Router()
 const Record = require('../../models/record')
 const Category = require('../../models/category')
 
+// Require other packages
+const moment = require('moment')
+
 // Set up routes of homepage
 router.get('/', async (req, res) => {
   try {
     const userId = req.user._id
-    const dateSet = new Set()
+    const monthOfYearSet = new Set()
     let totalAmount = 0
-    // Find all categories to render category filter,
-    // and find all records of the user to render record list
-    const [records, categories] = await Promise.all([
+    const [records, categoryList] = await Promise.all([
       Record.find({ userId }).lean().sort({ date: 'desc' }).exec(),
       Category.find().lean().exec(),
     ])
 
-    // Iterate over records
     records.forEach(record => {
       // Calculate total amount
       totalAmount += record.amount
-      // Store month of the record to dateSet to render month filter
-      dateSet.add(record.date.slice(0, 7))
+      // Store different months of years to render year-month filter
+
+      // Reassign date format to render record list
+      const date = moment.utc(record.date)
+      monthOfYearSet.add(date.format('YYYY-MM'))
+      record.date = date.format('YYYY-MM-DD')
     })
 
     // Format total amount
     totalAmount = new Intl.NumberFormat().format(totalAmount)
 
     return res.render('index', {
-      records,
+      monthOfYearSet,
+      categoryList,
       totalAmount,
-      categoryList: categories,
-      dateSet,
+      records,
       indexCSS: true,
     })
   } catch (err) {

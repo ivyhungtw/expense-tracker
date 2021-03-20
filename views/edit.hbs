@@ -22,7 +22,7 @@
             <select class="custom-select col-md-8" name="category">
 
               {{#each categoryList}}
-                <option value="{{ this.name }}" {{#if (eq this.tempCategory this.name)}}selected{{/if}}>{{ this.name }}</option>
+                <option value="{{ this.name }}" {{#if (eq ../selectedCategory this.name)}}selected{{/if}}>{{ this.name }}</option>
               {{/each}}
                 
             </select>
