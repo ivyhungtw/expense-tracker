@@ -1,9 +1,10 @@
 # Expense Tracker
 
-A simple web application built with Express.js for users to track expenses.
+Expense Tracker is a simple RESTful web application built with Node.js, Express, and mongoDB for users to track daily expenses.
 
 This project is Live on: https://sleepy-cliffs-84117.herokuapp.com/
-You can use the test account below or register an account to login.
+
+You can use the default accounts below or register an account to login.
 
 ```
 email: user1@example.com/user2@example.com
@@ -12,10 +13,14 @@ password: 12345678
 
 ## Features
 
-- Register, login and logout an account
-- Facebook login
+- Sign up for an account by providing name, email, and password
+- Log in with email or Facebook account
+- Log out of an account
+
+After login, a user can:
+
 - View all expenses
-- Show total amount of expenses
+- View total amount of expenses
 - Filter expenses by category and month
 - Add an expense
 - Edit an expense
@@ -25,39 +30,33 @@ password: 12345678
 ![Login page](/public/photos/login.png)
 ![Register page](/public/photos/register.png)
 
-## Prerequisites & Packages
+## Prerequisites
 
-- Node.js v14.15.1
-- Express
-- Express-handlebars
-- mongoDB Community Server
-- mongoose
-- body-parser
-- bcryptjs
-- connect-flash
-- dotenv
-- express-session
-- method-override
-- passport
-- passport-facebook
-- passport-local
+- [Git](https://git-scm.com/downloads)
+- [Node.js v14.15.1](https://nodejs.org/en/)
+- [Express](https://expressjs.com/)
+- [mongoDB](https://www.mongodb.com/)
 
-## Installation
+## Install Expense Tracker
 
-#### Clone the source locally
+#### Clone the repository locally
 
 ```
 $ git clone https://github.com/ivyhungtw/expense-tracker.git
-$ cd expense-tracker
 ```
 
 #### Install project dependencies
 
 ```
-npm install
+$ cd expense-tracker
+$ npm install
 ```
 
-#### Add .env file and fill out the information
+#### Add .env file
+
+To properly use the app and Facebook login feature, make sure you have filled out the following information in .env file.
+
+You can get your own Facebook id and secret on [Facebook Developers](https://developers.facebook.com/).
 
 ```
 FACEBOOK_ID=<Your Facebook app ID>
@@ -68,18 +67,28 @@ MONGODB_URI=mongodb://localhost/todo-list
 PORT=3000
 ```
 
+## Use Expense Tracker
+
 #### Import seed data
 
+To have default users, categories, and records set up, run the following script.
+
 ```
-npm run seed
+$ npm run seed
 ```
 
 #### Start the app
 
+If you have installed [nodemon](https://www.npmjs.com/package/nodemon), run the following script.
+
 ```
-npm run dev
+$ npm run dev
 ```
 
-The server will start running on
+or just run:
 
-- http://localhost:3000/
+```
+$ node app.js
+```
+
+The server will start running on http://localhost:3000/
