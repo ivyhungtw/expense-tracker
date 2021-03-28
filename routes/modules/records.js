@@ -42,7 +42,7 @@ router.get('/:id/edit', async (req, res) => {
     const _id = req.params.id
     const [record, categoryList] = await Promise.all([
       Record.findOne({ _id, userId }).populate('categoryId').lean().exec(),
-      Category.find().lean().exec(),
+      Category.find().lean().exec()
     ])
 
     record.date = moment.utc(record.date).format('YYYY-MM-DD')
@@ -50,7 +50,7 @@ router.get('/:id/edit', async (req, res) => {
     return res.render('edit', {
       record,
       categoryList,
-      formCSS: true,
+      formCSS: true
     })
   } catch (err) {
     console.warn(err)
@@ -122,7 +122,7 @@ router.get('/', async (req, res) => {
       const endDate = new Date(year, month, 0)
       filter.date = {
         $gte: startDate,
-        $lt: endDate,
+        $lt: endDate
       }
     }
 
@@ -147,7 +147,7 @@ router.get('/', async (req, res) => {
       selectedCategory,
       totalAmount,
       records: filteredRecords,
-      indexCSS: true,
+      indexCSS: true
     })
   } catch (err) {
     console.warn(err)

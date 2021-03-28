@@ -14,7 +14,7 @@ router.get('/login', (req, res) => {
     error_msg: req.flash('error'),
     email: req.session.email,
     password: req.session.password,
-    formCSS: true,
+    formCSS: true
   })
 })
 
@@ -48,7 +48,7 @@ router.get('/register', (req, res) => {
 
 router.post('/register', async (req, res) => {
   const errors = []
-  const emailRule = /^\w+((-\w+)|(\.\w+)|(\+\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/
+  const emailRule = /^\w+((-\w+)|(\.\w+)|(\+\w+))*@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/
   // Get form data
   const { name, email, password, confirmPassword } = req.body
   req.session.password = ''
@@ -56,7 +56,7 @@ router.post('/register', async (req, res) => {
   // Check if all required fields are filled out
   if (!email || !password || !confirmPassword) {
     errors.push({
-      message: 'Please fill out all required fields marked with *',
+      message: 'Please fill out all required fields marked with *'
     })
   }
   // Check email format
@@ -75,7 +75,7 @@ router.post('/register', async (req, res) => {
       email,
       password,
       confirmPassword,
-      formCSS: true,
+      formCSS: true
     })
   }
 
@@ -99,7 +99,7 @@ router.post('/register', async (req, res) => {
     await User.create({
       name,
       email,
-      password: hash,
+      password: hash
     })
 
     // Save registered email in session to show it on login page
@@ -118,7 +118,7 @@ router.post('/register', async (req, res) => {
       email,
       password,
       confirmPassword,
-      formCSS: true,
+      formCSS: true
     })
   }
 })

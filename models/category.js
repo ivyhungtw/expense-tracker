@@ -11,14 +11,14 @@ const categorySchema = new Schema({
     trim: true,
     validate: {
       validator: word => word.trim().toLowerCase() !== 'all',
-      message: () => 'You can not name category as "all"',
-    },
+      message: () => 'You can not name category as "all"'
+    }
   },
   icon: {
     type: String,
     required: true,
-    trim: true,
-  },
+    trim: true
+  }
 })
 
 // Export model

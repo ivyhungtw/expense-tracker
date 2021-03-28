@@ -7,5 +7,5 @@ module.exports = {
     // redirect to login page and show warning message
     req.flash('warning_msg', 'Please login first!')
     res.redirect('/users/login')
-  },
+  }
 }

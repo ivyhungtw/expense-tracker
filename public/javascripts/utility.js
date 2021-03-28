@@ -1,4 +1,6 @@
 // Ask for confirmation before deleting
-function checkDelete() {
-  return confirm('Are you sure to delete it?')
+const checkDelete = () => {
+  return window.confirm('Are you sure to delete it?')
 }
+
+module.exports = checkDelete

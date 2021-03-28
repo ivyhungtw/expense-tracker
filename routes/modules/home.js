@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
         .lean()
         .sort({ date: 'desc' })
         .exec(),
-      Category.find().lean().exec(),
+      Category.find().lean().exec()
     ])
 
     records.forEach(record => {
@@ -46,7 +46,7 @@ router.get('/', async (req, res) => {
       categoryList,
       totalAmount,
       records,
-      indexCSS: true,
+      indexCSS: true
     })
   } catch (err) {
     console.warn(err)

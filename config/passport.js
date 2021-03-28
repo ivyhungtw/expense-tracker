@@ -21,14 +21,14 @@ module.exports = app => {
         .then(user => {
           if (!user) {
             return done(null, false, {
-              message: 'That email is not registered!',
+              message: 'That email is not registered!'
             })
           }
           // Check password
           return bcrypt.compare(password, user.password).then(isMatch => {
             if (!isMatch) {
               return done(null, false, {
-                message: 'Incorrect Password',
+                message: 'Incorrect Password'
               })
             }
             return done(null, user)
@@ -45,7 +45,7 @@ module.exports = app => {
         clientID: process.env.FACEBOOK_ID,
         clientSecret: process.env.FACEBOOK_SECRET,
         callbackURL: process.env.FACEBOOK_CALLBACK,
-        profileFields: ['email', 'displayName'],
+        profileFields: ['email', 'displayName']
       },
       (accessToken, refreshToken, profile, done) => {
         const { email, name } = profile._json

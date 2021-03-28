@@ -15,12 +15,12 @@ const userRecordCount = 3
 const SEED_USERS = [
   {
     email: 'user1@example.com',
-    password: '12345678',
+    password: '12345678'
   },
   {
     email: 'user2@example.com',
-    password: '12345678',
-  },
+    password: '12345678'
+  }
 ]
 
 // Success
@@ -35,7 +35,7 @@ db.once('open', async () => {
         .then(hash =>
           User.create({
             email: seedUser.email,
-            password: hash,
+            password: hash
           })
         )
         .then(user => {
