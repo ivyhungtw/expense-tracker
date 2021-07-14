@@ -24,9 +24,14 @@ router.get('/', async (req, res) => {
       Category.find().lean().exec()
     ])
 
+    let CategoryObject = Object.assign(
+      ...categoryList.map(category => ({ [category.name]: 0 }))
+    )
+
     records.forEach(record => {
       // Calculate total amount
       totalAmount += record.amount
+      CategoryObject[record.categoryId.name] += record.amount
       // Store different months of years to render year-month filter
 
       // Reassign date format to render record list
@@ -41,12 +46,42 @@ router.get('/', async (req, res) => {
     // Format total amount
     totalAmount = new Intl.NumberFormat().format(totalAmount)
 
+    const result = await Record.aggregate([
+      { $match: { userId } },
+      {
+        $group: {
+          _id: { year: { $year: '$date' }, month: { $month: '$date' } },
+          count: {
+            $sum: '$amount'
+          }
+        }
+      },
+      {
+        $sort: {
+          '_id.year': -1,
+          '_id.month': -1
+        }
+      }
+    ])
+
+    let amountByMonth = {}
+
+    result.forEach(el => {
+      let date = Object.values(el._id).join('-')
+      amountByMonth[date] = el.count
+    })
+
     return res.render('index', {
       monthOfYearSet,
       categoryList,
       totalAmount,
       records,
-      indexCSS: true
+      indexCSS: true,
+      categoryName: Object.keys(CategoryObject),
+      categoryAmount: Object.values(CategoryObject),
+      chart: true,
+      groupByMonth: Object.keys(amountByMonth),
+      amountByMonth: Object.values(amountByMonth)
     })
   } catch (err) {
     console.warn(err)
