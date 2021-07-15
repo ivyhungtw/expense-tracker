@@ -4,6 +4,10 @@ const mongoose = require('mongoose')
 // Define Schema
 const Schema = mongoose.Schema
 const recordSchema = new Schema({
+  type: {
+    type: String,
+    required: true
+  },
   name: {
     type: String,
     required: true
