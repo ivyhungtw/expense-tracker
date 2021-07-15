@@ -122,6 +122,79 @@ const recordController = {
     } catch (err) {
       console.warn(err)
     }
+  },
+  createRecord: async (req, res) => {
+    try {
+      const categoryList = await Category.find().lean().exec()
+
+      return res.render('new', {
+        categoryList,
+        formCSS: true,
+        type: req.query.type
+      })
+    } catch (err) {
+      console.warn(err)
+    }
+  },
+  postRecord: async (req, res) => {
+    try {
+      await Record.create({ ...req.body, userId: req.user._id })
+
+      return res.redirect(`/records/${req.body.type}`)
+    } catch (err) {
+      console.warn(err)
+    }
+  },
+  editRecord: async (req, res) => {
+    try {
+      const [record, categoryList] = await Promise.all([
+        Record.findOne({ _id: req.params.id, userId: req.user._id })
+          .populate('categoryId')
+          .lean()
+          .exec(),
+        Category.find().lean().exec()
+      ])
+
+      record.date = moment.utc(record.date).format('YYYY-MM-DD')
+
+      return res.render('edit', {
+        record,
+        categoryList,
+        type: req.query.type,
+        formCSS: true
+      })
+    } catch (err) {
+      console.warn(err)
+    }
+  },
+  putRecord: async (req, res) => {
+    try {
+      const userId = req.user._id
+      const newRecord = { ...req.body, userId }
+      let record = await Record.findOne({ _id: req.params.id, userId }).exec()
+
+      // Reassign new record data and save to record collection
+      record = Object.assign(record, newRecord)
+      await record.save()
+
+      return res.redirect(`/records/${newRecord.type}`)
+    } catch (err) {
+      console.warn(err)
+    }
+  },
+  deleteRecord: async (req, res) => {
+    try {
+      const record = await Record.findOne({
+        _id: req.params.id,
+        userId: req.user._id
+      }).exec()
+
+      await record.remove()
+
+      return res.redirect('back')
+    } catch (err) {
+      console.warn(err)
+    }
   }
 }
 
