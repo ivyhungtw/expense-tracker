@@ -1,4 +1,3 @@
-
 <div class="row py-5">
   <div class="col-12 col-lg-10 col-xl-8 mx-auto form-container">
     <div class="card">
@@ -10,38 +9,46 @@
           {{!-- Name --}}
           <div class="col-md-12 row mb-3 ml-1 mr-4">
             <label for="name" class="col-md-4 col-form-label">Name<span class="field-required">*</span> </label>
-            <input type="text" name="name" class="form-control col-md-8" id="name" value="{{ record.name }}" required maxlength="15">
+            <input type="text" name="name" class="form-control col-md-8" id="name" value="{{ record.name }}" required
+              maxlength="15">
           </div>
           {{!-- Date --}}
           <div class="col-md-12 row mb-3 ml-1 mr-4">
             <label for="date" class="col-md-4 col-form-label">Date<span class="field-required">*</span></label>
-            <input type="date" name="date" class="form-control col-md-8 form-date" id="date" value="{{ record.date }}" required>
+            <input type="date" name="date" class="form-control col-md-8 form-date" id="date" value="{{ record.date }}"
+              required>
           </div>
           {{!-- Category --}}
           <div class="col-md-12 row mb-3 ml-1 mr-4">
             <label for="category" class="col-md-4 col-form-label">Category<span class="field-required">*</span></label>
             <select class="custom-select col-md-8" name="categoryId" id="category">
               {{#each categoryList}}
-                <option value="{{ this._id }}">{{ this.name }}</option>
+              {{#if (eq this.type 'expense')}}
+              <option value="{{ this._id }}">{{ this.name }}</option>
+              {{/if}}
               {{/each}}
             </select>
           </div>
           {{!-- Merchant --}}
           <div class="col-md-12 row mb-3 ml-1 mr-4">
             <label for="merchant" class="col-md-4 col-form-label">Merchant</label>
-            <input type="text" name="merchant" class="form-control col-md-8" id="merchant" value="{{ record.merchant }}">
+            <input type="text" name="merchant" class="form-control col-md-8" id="merchant"
+              value="{{ record.merchant }}">
           </div>
           {{!-- Amount --}}
           <div class="col-md-12 row mb-3 ml-1 mr-4">
             <label for="amount" class="col-md-4 col-form-label">Amount<span class="field-required">*</span></label>
-            <input type="number" name="amount" class="form-control col-md-8" id="amount" value="{{ record.amount }}" required min="1" max="999999">
+            <input type="number" name="amount" class="form-control col-md-8" id="amount" value="{{ record.amount }}"
+              required min="1" max="999999">
           </div>
+          {{!-- type --}}
+          <input type="text" name="type" class="form-control col-md-8" value="{{type}}" style="display: none;">
           {{!-- Button --}}
           <div class="col-md-12 d-flex justify-content-end mr-4">
             <button class="btn btn-success" type="submit">Create</button>
           </div>
         </form>
-      
+
       </div>
     </div>
   </div>

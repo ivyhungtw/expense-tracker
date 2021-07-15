@@ -3,7 +3,7 @@
 
     {{!-- Filter --}}
     <div class="mt-4">
-      <form action="/records/expenses" class="input-group row" onchange="submit();">
+      <form action="/records/{{type}}" class="input-group row" onchange="submit();">
 
         {{!-- Date --}}
         <div class="col-sm-6 mb-3">
@@ -38,9 +38,10 @@
     {{!-- Total amount --}}
     <div class="mt-4 mb-3 mx-2 row">
       <div class="col-md-3 text-center">
-        <h6 style=" color: #8c97a0;">Total amount:</h6>
+        <h6 style=" color: #8c97a0;">Total {{type}}s:</h6>
       </div>
-      <div class="col-md-5 text-info total-amount text-center">$ {{ totalAmount }}</div>
+      <div class="col-md-5 text-info total-amount text-center">$ {{#if (eq type 'expense')}}-{{/if}}{{ totalAmount }}
+      </div>
     </div>
 
 
@@ -61,14 +62,14 @@
         {{!-- Amount --}}
         <div class="col-4 d-flex align-items-center justify-content-end">
           <div class="d-flex flex-column align-items-end">
-            <h5 class="record-amount">${{ this.amount }}</h5>
+            <h5 class="record-amount">${{#if (eq this.type 'expense')}}-{{/if}}{{ this.amount }}</h5>
             <small class="text-muted">{{this.merchant}}</small>
           </div>
 
         </div>
         {{!-- Buttons --}}
         <div class="col-3 d-flex justify-content-center align-items-center">
-          <a href="/records/{{ this._id }}/edit" class="mr-2"><i class="fas fa-edit icon-edit"></i></a>
+          <a href="/records/{{ this._id }}/edit?type={{../type}}" class="mr-2"><i class="fas fa-edit icon-edit"></i></a>
           <form method="POST" action="/records/{{ this._id }}?_method=DELETE" class="record-delete"
             onsubmit="return checkDelete()" style="margin: 0;">
             <button type="submit" class="record-deleteBtn"><i class="fas fa-trash-alt icon-delete"></i></button>
@@ -77,7 +78,7 @@
       </div>
       {{/each}}
       <div class="my-4 d-flex justify-content-center">
-        <a class="btn btn-info" href="/records/new">Add Expense</a>
+        <a class="btn btn-info" href="/records/new?type={{type}}">Add {{type}}</a>
       </div>
     </div>
 

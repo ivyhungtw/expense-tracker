@@ -22,8 +22,10 @@
             <option value="" selected>All Categories</option>
 
             {{#each categoryList}}
+            {{#if (eq this.type 'expense')}}
             <option value="{{ this.name }}" {{#if (eq ../selectedCategory this.name)}}selected{{/if}}>{{ this.name }}
             </option>
+            {{/if}}
             {{/each}}
 
           </select>
@@ -48,7 +50,7 @@
               </div>
               <div>
                 <span><i class="fas fa-dollar-sign fa-xs"></i></span>
-                <span style="font-weight: 500;">-{{ totalExpense }}</span>
+                <span style="font-weight: 500;">{{ totalExpense }}</span>
               </div>
               <div>
                 <span style="font-size: 0.9rem;font-weight: 500; color: #e84200ed;">
@@ -144,7 +146,8 @@
         </div>
         {{!-- Buttons --}}
         <div class="col-3 d-flex justify-content-center align-items-center">
-          <a href="/records/{{ this._id }}/edit" class="mr-2"><i class="fas fa-edit icon-edit"></i></a>
+          <a href="/records/{{ this._id }}/edit?type={{this.type}}" class="mr-2"><i
+              class="fas fa-edit icon-edit"></i></a>
           <form method="POST" action="/records/{{ this._id }}?_method=DELETE" class="record-delete"
             onsubmit="return checkDelete()" style="margin: 0;">
             <button type="submit" class="record-deleteBtn"><i class="fas fa-trash-alt icon-delete"></i></button>

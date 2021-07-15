@@ -17,7 +17,21 @@ const {
 
 // Set up routes
 // Add expense page
-router.get('/expenses', async (req, res) => {
+router.get('/new', async (req, res) => {
+  try {
+    const categoryList = await Category.find().lean().exec()
+
+    return res.render('new', {
+      categoryList,
+      formCSS: true,
+      type: req.query.type
+    })
+  } catch (err) {
+    console.warn(err)
+  }
+})
+
+router.get('/:type', async (req, res) => {
   try {
     const selectedDate = req.query.date
     const selectedCategory = req.query.category
@@ -27,7 +41,8 @@ router.get('/expenses', async (req, res) => {
         ? new Set()
         : req.session.monthOfYearSet.split(' ')
     let totalAmount = 0
-    let filter = { userId, type: 'expense' }
+    let { type } = req.params
+    let filter = { userId, type }
 
     let categoryList = await Category.find().lean().exec()
 
@@ -77,25 +92,16 @@ router.get('/expenses', async (req, res) => {
     // Format total amount
     totalAmount = new Intl.NumberFormat().format(totalAmount)
 
-    return res.render('expense', {
+    return res.render('records', {
       monthOfYearSet,
       categoryList,
       selectedDate,
       selectedCategory,
       totalAmount,
       records,
-      indexCSS: true
+      indexCSS: true,
+      type
     })
-  } catch (err) {
-    console.warn(err)
-  }
-})
-
-router.get('/new', async (req, res) => {
-  try {
-    const categoryList = await Category.find().lean().exec()
-
-    return res.render('new', { categoryList, formCSS: true })
   } catch (err) {
     console.warn(err)
   }
@@ -109,7 +115,7 @@ router.post('/', async (req, res) => {
     // Save the record to record collection
     await Record.create({ ...req.body, userId })
 
-    return res.redirect('/')
+    return res.redirect(`/records/${req.body.type}`)
   } catch (err) {
     console.warn(err)
   }
@@ -130,7 +136,8 @@ router.get('/:id/edit', async (req, res) => {
     return res.render('edit', {
       record,
       categoryList,
-      formCSS: true
+      formCSS: true,
+      type: req.query.type
     })
   } catch (err) {
     console.warn(err)
@@ -151,7 +158,7 @@ router.put('/:id', async (req, res) => {
     record = Object.assign(record, newRecord)
     await record.save()
 
-    return res.redirect('/')
+    return res.redirect(`/records/${newRecord.type}`)
   } catch (err) {
     console.warn(err)
   }
@@ -166,7 +173,7 @@ router.delete('/:id', async (req, res) => {
     // Remove the record from database
     await record.remove()
 
-    return res.redirect('/')
+    return res.redirect('back')
   } catch (err) {
     console.warn(err)
   }
@@ -225,7 +232,7 @@ router.get('/', async (req, res) => {
     filteredRecords.forEach(record => {
       if (record.type === 'expense') {
         totalAmount -= record.amount
-        totalExpense += record.amount
+        totalExpense -= record.amount
       } else if (record.type === 'revenue') {
         totalAmount += record.amount
         totalRevenue += record.amount

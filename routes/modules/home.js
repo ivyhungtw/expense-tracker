@@ -42,7 +42,7 @@ router.get('/', async (req, res) => {
       // Calculate total amount
       if (record.type === 'expense') {
         totalAmount -= record.amount
-        totalExpense += record.amount
+        totalExpense -= record.amount
       } else if (record.type === 'revenue') {
         totalAmount += record.amount
         totalRevenue += record.amount
