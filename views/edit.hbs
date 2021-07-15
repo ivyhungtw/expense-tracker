@@ -2,7 +2,7 @@
   <div class="col-12 col-lg-10 col-xl-8 mx-auto form-container">
     <div class="card">
       <div class="card-body">
-        <h5 class="card-title"><i class="fas fa-edit"></i> Edit Expense</h5>
+        <h5 class="card-title"><i class="fas fa-edit"></i> Edit {{type}}</h5>
         <hr>
 
         <form class="row g-3" action="/records/{{ record._id }}?_method=PUT" method="POST">
@@ -18,13 +18,16 @@
             <input type="date" name="date" class="form-control col-md-8" id="date" value="{{ record.date }}" required>
           </div>
           {{!-- Category --}}
-          <div class="col-md-12 row mb-3 ml-1 mr-4">
+          <div class="col-md-12 row mb-3 ml-1 mr-4" {{#if (eq this.type 'expense' )}}{{else}}style="display: none;"
+            {{/if}}>
             <label for="category" class="col-md-4 col-form-label">Category<span class="field-required">*</span></label>
             <select class="custom-select col-md-8" name="categoryId">
 
               {{#each categoryList}}
+              {{#if (eq this.type ../type)}}
               <option value="{{ this._id }}" {{#if (eq ../record.categoryId.name this.name)}}selected{{/if}}>{{
                 this.name }}</option>
+              {{/if}}
               {{/each}}
 
             </select>

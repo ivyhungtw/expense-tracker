@@ -3,7 +3,9 @@
 
     {{!-- Filter --}}
     <div class="mt-4">
-      <form action="/records/{{type}}" class="input-group row" onchange="submit();">
+      <form action="/records/{{type}}"
+        class="input-group row {{#if (eq type 'expense')}}{{else}}d-flex justify-content-end{{/if}}"
+        onchange="submit();">
 
         {{!-- Date --}}
         <div class="col-sm-6 mb-3">
@@ -17,12 +19,13 @@
         </div>
 
         {{!-- Category --}}
+        {{#if (eq type 'expense')}}
         <div class="col-sm-6">
           <select class="custom-select ml-2" name="category">
             <option value="" selected>All Categories</option>
 
             {{#each categoryList}}
-            {{#if (eq this.type 'expense')}}
+            {{#if (eq this.type ../type)}}
             <option value="{{ this.name }}" {{#if (eq ../selectedCategory this.name)}}selected{{/if}}>{{ this.name }}
             </option>
             {{/if}}
@@ -30,6 +33,7 @@
 
           </select>
         </div>
+        {{/if}}
 
       </form>
     </div>
