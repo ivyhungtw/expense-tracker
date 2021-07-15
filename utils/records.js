@@ -1,10 +1,10 @@
 const Record = require('../models/record')
 
 module.exports = {
-  async getAmountByMonth(userId) {
+  async getAmountByMonth(filter) {
     let amountByMonth = {}
     const result = await Record.aggregate([
-      { $match: { userId } },
+      { $match: filter },
       {
         $group: {
           _id: { year: { $year: '$date' }, month: { $month: '$date' } },

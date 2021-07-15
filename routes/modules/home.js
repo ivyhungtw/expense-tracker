@@ -9,35 +9,42 @@ const Category = require('../../models/category')
 // Require other packages
 const moment = require('moment')
 
+const {
+  getAmountByMonth,
+  getAmountByCategory,
+  organizeCategoryData
+} = require('../../utils/records')
+
 // Set up routes of homepage
 router.get('/', async (req, res) => {
   try {
     const userId = req.user._id
+    const filter = { userId }
     const monthOfYearSet = new Set()
     let totalAmount = 0
-    const [records, categoryList] = await Promise.all([
-      Record.find({ userId })
-        .populate('categoryId')
-        .lean()
-        .sort({ date: 'desc' })
-        .exec(),
-      Category.find().lean().exec()
-    ])
+    const [records, categoryList, amountByMonth, amountByCategory] =
+      await Promise.all([
+        Record.find({ userId })
+          .populate('categoryId')
+          .lean()
+          .sort({ date: 'desc' })
+          .exec(),
+        Category.find().lean().exec(),
+        getAmountByMonth(filter),
+        getAmountByCategory(filter)
+      ])
 
-    let CategoryObject = Object.assign(
-      ...categoryList.map(category => ({ [category.name]: 0 }))
-    )
+    const categoryObject = organizeCategoryData(categoryList, amountByCategory)
 
     records.forEach(record => {
       // Calculate total amount
       totalAmount += record.amount
-      CategoryObject[record.categoryId.name] += record.amount
-      // Store different months of years to render year-month filter
 
-      // Reassign date format to render record list
       const date = moment.utc(record.date)
-      monthOfYearSet.add(date.format('YYYY-MM'))
+      // Reassign date format to render record list
       record.date = date.format('YYYY-MM-DD')
+      // Store different months of years to render year-month filter
+      monthOfYearSet.add(date.format('YYYY-MM'))
     })
 
     // Save months of years to session for later use
@@ -46,44 +53,14 @@ router.get('/', async (req, res) => {
     // Format total amount
     totalAmount = new Intl.NumberFormat().format(totalAmount)
 
-    const result = await Record.aggregate([
-      { $match: { userId } },
-      {
-        $group: {
-          _id: { year: { $year: '$date' }, month: { $month: '$date' } },
-          count: {
-            $sum: '$amount'
-          }
-        }
-      },
-      {
-        $sort: {
-          '_id.year': -1,
-          '_id.month': -1
-        }
-      }
-    ])
-
-    let amountByMonth = {}
-
-    result.forEach(el => {
-      let date = Object.values(el._id).join('-')
-      amountByMonth[date] = el.count
-    })
-
-    // Category data
-    categoryList.forEach(category => {
-      category.amount = CategoryObject[category.name]
-    })
-
     return res.render('index', {
       monthOfYearSet,
       categoryList,
       totalAmount,
       records,
       indexCSS: true,
-      categoryName: Object.keys(CategoryObject),
-      categoryAmount: Object.values(CategoryObject),
+      categoryName: Object.keys(categoryObject),
+      categoryAmount: Object.values(categoryObject),
       chart: true,
       groupByMonth: Object.keys(amountByMonth),
       amountByMonth: Object.values(amountByMonth),

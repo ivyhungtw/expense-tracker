@@ -9,6 +9,12 @@ const Category = require('../../models/category')
 // Require other packages
 const moment = require('moment')
 
+const {
+  getAmountByMonth,
+  getAmountByCategory,
+  organizeCategoryData
+} = require('../../utils/records')
+
 // Set up routes
 // Add expense page
 router.get('/new', async (req, res) => {
@@ -126,6 +132,13 @@ router.get('/', async (req, res) => {
       }
     }
 
+    const [amountByMonth, amountByCategory] = await Promise.all([
+      getAmountByMonth(filter),
+      getAmountByCategory(filter)
+    ])
+
+    const categoryObject = organizeCategoryData(categoryList, amountByCategory)
+
     // Filter records to render record list
     const filteredRecords = await Record.find(filter)
       .populate('categoryId')
@@ -147,7 +160,13 @@ router.get('/', async (req, res) => {
       selectedCategory,
       totalAmount,
       records: filteredRecords,
-      indexCSS: true
+      indexCSS: true,
+      categoryName: Object.keys(categoryObject),
+      categoryAmount: Object.values(categoryObject),
+      groupByMonth: Object.keys(amountByMonth),
+      amountByMonth: Object.values(amountByMonth),
+      chart: true,
+      home: true
     })
   } catch (err) {
     console.warn(err)
