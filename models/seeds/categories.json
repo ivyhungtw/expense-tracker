@@ -1,22 +1,32 @@
 {
   "results": [
     {
+      "type": "revenue",
+      "name": "Revenue",
+      "icon": "fas fa-money-check-alt"
+    },
+    {
+      "type": "expense",
       "name": "Home",
       "icon": "fas fa-home"
     },
     {
+      "type": "expense",
       "name": "Transportation",
       "icon": "fas fa-shuttle-van"
     },
     {
+      "type": "expense",
       "name": "Entertainment",
       "icon": "fas fa-grin-beam"
     },
     {
+      "type": "expense",
       "name": "Food",
       "icon": "fas fa-utensils"
     },
     {
+      "type": "expense",
       "name": "Other",
       "icon": "fas fa-pen"
     }

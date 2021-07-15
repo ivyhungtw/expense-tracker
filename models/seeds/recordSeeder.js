@@ -11,7 +11,7 @@ const recordList = require('./records.json').results
 const User = require('../../models/user')
 const Category = require('../../models/category')
 
-const userRecordCount = 3
+const userRecordCount = 5
 const SEED_USERS = [
   {
     email: 'user1@example.com',

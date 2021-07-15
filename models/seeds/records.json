@@ -1,6 +1,14 @@
 {
   "results": [
     {
+      "type": "revenue",
+      "name": "salary",
+      "category": "Revenue",
+      "amount": 60,
+      "date": "2021-03-01"
+    },
+    {
+      "type": "expense",
       "name": "早餐",
       "category": "Food",
       "amount": 60,
@@ -8,12 +16,14 @@
       "merchant": "Harbs"
     },
     {
+      "type": "expense",
       "name": "公車",
       "category": "Transportation",
       "amount": 30,
       "date": "2020-01-01"
     },
     {
+      "type": "expense",
       "name": "電影",
       "category": "Entertainment",
       "amount": 230,
@@ -21,18 +31,125 @@
       "merchant": "信義威秀"
     },
     {
+      "type": "expense",
       "name": "電費",
       "category": "Home",
       "amount": 1000,
       "date": "2020-01-01"
     },
     {
+      "type": "expense",
       "name": "秘密",
       "category": "Other",
       "amount": 10000,
       "date": "2020-01-01"
     },
     {
+      "type": "expense",
+      "name": "晚餐",
+      "category": "Food",
+      "amount": 1800,
+      "date": "2021-03-01",
+      "merchant": "響食天堂"
+    },
+    {
+      "type": "revenue",
+      "name": "salary",
+      "category": "Revenue",
+      "amount": 60,
+      "date": "2021-03-01"
+    },
+    {
+      "type": "expense",
+      "name": "早餐",
+      "category": "Food",
+      "amount": 60,
+      "date": "2020-01-01",
+      "merchant": "Harbs"
+    },
+    {
+      "type": "expense",
+      "name": "公車",
+      "category": "Transportation",
+      "amount": 30,
+      "date": "2020-01-01"
+    },
+    {
+      "type": "expense",
+      "name": "電影",
+      "category": "Entertainment",
+      "amount": 230,
+      "date": "2020-01-01",
+      "merchant": "信義威秀"
+    },
+    {
+      "type": "expense",
+      "name": "電費",
+      "category": "Home",
+      "amount": 1000,
+      "date": "2020-01-01"
+    },
+    {
+      "type": "expense",
+      "name": "秘密",
+      "category": "Other",
+      "amount": 10000,
+      "date": "2020-01-01"
+    },
+    {
+      "type": "expense",
+      "name": "晚餐",
+      "category": "Food",
+      "amount": 1800,
+      "date": "2021-03-01",
+      "merchant": "響食天堂"
+    },
+    {
+      "type": "revenue",
+      "name": "salary",
+      "category": "Revenue",
+      "amount": 60,
+      "date": "2021-03-01"
+    },
+    {
+      "type": "expense",
+      "name": "早餐",
+      "category": "Food",
+      "amount": 60,
+      "date": "2020-01-01",
+      "merchant": "Harbs"
+    },
+    {
+      "type": "expense",
+      "name": "公車",
+      "category": "Transportation",
+      "amount": 30,
+      "date": "2020-01-01"
+    },
+    {
+      "type": "expense",
+      "name": "電影",
+      "category": "Entertainment",
+      "amount": 230,
+      "date": "2020-01-01",
+      "merchant": "信義威秀"
+    },
+    {
+      "type": "expense",
+      "name": "電費",
+      "category": "Home",
+      "amount": 1000,
+      "date": "2020-01-01"
+    },
+    {
+      "type": "expense",
+      "name": "秘密",
+      "category": "Other",
+      "amount": 10000,
+      "date": "2020-01-01"
+    },
+    {
+      "type": "expense",
       "name": "晚餐",
       "category": "Food",
       "amount": 1800,
