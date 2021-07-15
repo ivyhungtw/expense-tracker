@@ -23,22 +23,50 @@
 <body>
   <header>
     {{! nav bar }}
-    <nav class='navbar navbar-dark'>
+    <nav class='navbar navbar-expand-lg navbar-dark mx-3'>
       {{! brand name }}
       <a class='navbar-brand' href='/'>Expense Tracker</a>
       {{! button }}
-      <div>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         {{#if isAuthenticated}}
-        <a href='/users/logout' class='btn btn-outline-primary' id='loginBtn'>Logout</a>
+        <ul class="navbar-nav d-flex align-items-center" style="list-style: none;margin: 0;">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Overview <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Expense</a>
+          </li>
+          {{!-- Dropdown avatar --}}
+          <div class="dropdown m-3 d-flex justify-content-end">
+            <a class=" dropdown-toggle" style="text-decoration: none;" href="#" role="button" id="dropdownMenuLink"
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <img src="https://picsum.photos/id/237/200/300" style="height: 30px;width: 30px;border-radius: 10px;"
+                alt="">
+            </a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <a href='/users/logout' class='dropdown-item' id='loginBtn'>Logout</a>
+              <a class="dropdown-item" href="#">Profile</a>
+            </div>
+          </div>
+        </ul>
         {{else}}
         <a href='/users/login' class='btn btn-outline-primary' id='loginBtn'>Login</a>
         {{/if}}
       </div>
+
     </nav>
   </header>
   <main>
-    <div class='container'>
-      {{{body}}}
+    <div class="row">
+      <div class='{{#if isAuthenticated}}col-md-9{{else}}col-12{{/if}}' style="background: aliceblue;">
+
+        {{{body}}}
+      </div>
+    </div>
     </div>
   </main>
 

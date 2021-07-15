@@ -1,9 +1,10 @@
 <div class="row py-5">
-  <div class="col-11 mx-auto">
+  <div class="col-md-9 mx-auto">
 
     {{!-- Tototal amount --}}
-    <div class="mt-4 mb-5 row" style="background: aliceblue;border-radius: 10px;box-shadow: 3px 4px 5px 0px #05119a14;">
-      <div class="col-md-8 d-flex flex-column justify-content-center">
+    <div class="mt-4 mb-5 mx-2 row"
+      style="background: #f8f9fa;border-radius: 10px;box-shadow: 3px 4px 5px 0px #05119a14;">
+      <div class="col-md-6 col-lg-7 d-flex flex-column justify-content-center">
 
         <div class="amount-container row">
           <div class="expense-container col-md-4 d-flex flex-column align-items-center my-2">
@@ -33,7 +34,7 @@
         </div>
 
       </div>
-      <div class="col-md-4">
+      <div class="col-md-6 col-lg-5">
 
 
         <div class="chart-container p-2" style="max-width: 350px; margin: 0 auto; position:relative;">
@@ -47,8 +48,6 @@
           </div>
         </div>
       </div>
-      {{!-- <div class="col-md-3">Total amount:</div>
-      <div class="col-md-9 text-info total-amount">{{ totalAmount }}</div> --}}
     </div>
 
     {{!-- Filter --}}
@@ -81,9 +80,6 @@
 
       </form>
     </div>
-
-
-
 
     {{!-- Render list --}}
     <div>
@@ -120,5 +116,6 @@
         <a class="btn btn-info" href="/records/new">Add Expense</a>
       </div>
     </div>
+
   </div>
 </div>

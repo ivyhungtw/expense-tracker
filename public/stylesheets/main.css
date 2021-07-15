@@ -3,5 +3,13 @@ header {
 }
 
 .container {
-  max-width: 720px;
+  /* max-width: 720px; */
+}
+
+.navbar a {
+  color: white;
+}
+
+.dropdown-menu a {
+  color: #1c3869;
 }
