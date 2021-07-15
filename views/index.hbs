@@ -1,13 +1,56 @@
 <div class="row py-5">
   <div class="col-md-11 mx-auto">
 
-    {{!-- Tototal amount --}}
+    {{!-- Filter --}}
+    <div class="mt-4">
+      <form action="/records" class="input-group row" onchange="submit();">
+
+        {{!-- Date --}}
+        <div class="col-sm-6 mb-3">
+          <select class="custom-select ml-2" name="date">
+            <option value="">All Months</option>
+
+            {{#each monthOfYearSet}}
+            <option value="{{ this }}" {{#if (eq ../selectedDate this)}}selected{{/if}}>{{ this }}</option>
+            {{/each}}
+          </select>
+        </div>
+
+        {{!-- Category --}}
+        <div class="col-sm-6">
+          <select class="custom-select ml-2" name="category">
+            <option value="" selected>All Categories</option>
+
+            {{#each categoryList}}
+            <option value="{{ this.name }}" {{#if (eq ../selectedCategory this.name)}}selected{{/if}}>{{ this.name }}
+            </option>
+            {{/each}}
+
+          </select>
+        </div>
+
+      </form>
+    </div>
+
+
+    {{#if total}}
+    {{!-- Total amount --}}
+    <div class="mt-4 mb-3 mx-2 row">
+      <div class="col-md-3 text-center">
+        <h6 style=" color: #8c97a0;">Total amount:</h6>
+      </div>
+      <div class="col-md-5 text-info total-amount text-center">$ {{ totalAmount }}</div>
+    </div>
+    {{/if}}
+
+    {{!-- Charts --}}
+    {{#if home}}
     <div class="mt-4 mb-5 mx-2 row"
-      style="background: #f8f9fa;border-radius: 10px;box-shadow: 3px 4px 5px 0px #05119a14;">
-      <div class="col-lg-6 d-flex flex-column justify-content-center">
+      style="background: white;border-radius: 10px;box-shadow: 3px 4px 5px 0px #05119a14;">
+      <div class="col-lg-6 d-flex flex-column justify-content-around">
 
         <div class="amount-container row">
-          <div class="expense-container col-md-4 d-flex flex-column align-items-center my-2">
+          <div class="expense-container col-md-4 d-flex flex-column align-items-center my-2 pt-4">
             <div>
               <div class="pb-3 pt-4 pl-1">
                 <span style="background: white;box-shadow: 0px 4px 4px 1px #a8bfd25c;border-radius: 50%;" class="p-2">
@@ -48,42 +91,14 @@
         </div>
       </div>
     </div>
+    {{/if}}
 
-    {{!-- Filter --}}
-    <div class="mt-4">
-      <form action="/records" class="input-group row" onchange="submit();">
 
-        {{!-- Date --}}
-        <div class="col-sm-6 mb-3">
-          <select class="custom-select ml-2" name="date">
-            <option value="">All Months</option>
-
-            {{#each monthOfYearSet}}
-            <option value="{{ this }}" {{#if (eq ../selectedDate this)}}selected{{/if}}>{{ this }}</option>
-            {{/each}}
-          </select>
-        </div>
-
-        {{!-- Category --}}
-        <div class="col-sm-6">
-          <select class="custom-select ml-2" name="category">
-            <option value="" selected>All Categories</option>
-
-            {{#each categoryList}}
-            <option value="{{ this.name }}" {{#if (eq ../selectedCategory this.name)}}selected{{/if}}>{{ this.name }}
-            </option>
-            {{/each}}
-
-          </select>
-        </div>
-
-      </form>
-    </div>
 
     {{!-- Render list --}}
-    <div>
+    <div class="mx-2">
       {{#each records}}
-      <div class="row flex-md-nowrap py-2 record">
+      <div class="row flex-md-nowrap py-2 record" style="margin: 0;">
         {{!-- Icon --}}
         <div class="col-2 d-flex justify-content-center align-items-center">
           <i class="{{ this.categoryId.icon }} fa-2x record-icon"></i>
