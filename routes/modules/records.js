@@ -17,6 +17,80 @@ const {
 
 // Set up routes
 // Add expense page
+router.get('/expenses', async (req, res) => {
+  try {
+    const selectedDate = req.query.date
+    const selectedCategory = req.query.category
+    const userId = req.user._id
+    let monthOfYearSet =
+      !selectedCategory && !selectedDate
+        ? new Set()
+        : req.session.monthOfYearSet.split(' ')
+    let totalAmount = 0
+    let filter = { userId }
+
+    let categoryList = await Category.find().lean().exec()
+
+    // Add query string to filter
+    if (selectedCategory) {
+      const category = categoryList.find(
+        category => category.name === selectedCategory
+      )
+      filter.categoryId = category._id
+    }
+    if (selectedDate) {
+      const [year, month] = selectedDate.split('-')
+      const startDate = new Date(selectedDate)
+      const endDate = new Date(year, month, 0)
+      filter.date = {
+        $gte: startDate,
+        $lt: endDate
+      }
+    }
+
+    // Filter records to render record list
+    const records = await Record.find(filter)
+      .populate('categoryId')
+      .lean()
+      .sort({ date: 'desc' })
+      .exec()
+
+    records.forEach(record => {
+      // Calculate total amount
+      totalAmount += record.amount
+
+      const date = moment.utc(record.date)
+      // Reassign date format to render record list
+      record.date = date.format('YYYY-MM-DD')
+
+      if (!selectedCategory && !selectedDate) {
+        // Store different months of years to render year-month filter
+        monthOfYearSet.add(date.format('YYYY-MM'))
+      }
+    })
+
+    if (!selectedCategory && !selectedDate) {
+      // Save months of years to session for later use
+      req.session.monthOfYearSet = [...monthOfYearSet].join(' ')
+    }
+
+    // Format total amount
+    totalAmount = new Intl.NumberFormat().format(totalAmount)
+
+    return res.render('expense', {
+      monthOfYearSet,
+      categoryList,
+      selectedDate,
+      selectedCategory,
+      totalAmount,
+      records,
+      indexCSS: true
+    })
+  } catch (err) {
+    console.warn(err)
+  }
+})
+
 router.get('/new', async (req, res) => {
   try {
     const categoryList = await Category.find().lean().exec()
