@@ -1,6 +1,25 @@
 <div class="row py-5">
   <div class="col-md-11 mx-auto">
 
+    {{#if beginner}}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      You don't have any record yet. Try to <a href="/records/new?type=expense">add an expense</a> or <a
+        href="/records/new?type=revenue">add a revenue</a> now!
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {{/if}}
+
+    {{#if noFilterResult}}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      No result found. Try to use other month or category filter.
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {{/if}}
+
     {{!-- Filter --}}
     <div class="mt-4">
       <form action="/records" class="input-group row" onchange="submit();">
@@ -120,7 +139,10 @@
     </div>
     {{/if}}
 
-
+    {{!-- Record count --}}
+    <div class="mx-2 mb-3 d-flex justify-content-end">
+      <small style="font-weight:500">Found {{records.length}} records</small>
+    </div>
 
     {{!-- Render list --}}
     <div class="mx-2">

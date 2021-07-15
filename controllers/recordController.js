@@ -101,6 +101,15 @@ const recordController = {
         totalRevenue
       )
 
+      // Show warning messages to improver customer experience
+      let beginner
+      let noFilterResult
+      if (!selectedCategory && !selectedDate && !records.length) {
+        beginner = true
+      }
+      if ((selectedCategory || selectedDate) && !records.length) {
+        noFilterResult = true
+      }
       return res.render(page, {
         monthOfYearSet,
         categoryList,
@@ -117,7 +126,9 @@ const recordController = {
         chart: page === 'index' ? true : false,
         home: page === 'index' ? true : false,
         totalExpense,
-        totalRevenue
+        totalRevenue,
+        beginner,
+        noFilterResult
       })
     } catch (err) {
       console.warn(err)
