@@ -1,0 +1,83 @@
+<div class="row py-5">
+  <div class="col-md-11 mx-auto">
+
+    {{!-- Filter --}}
+    <div class="mt-4">
+      <form action="/records/expenses" class="input-group row" onchange="submit();">
+
+        {{!-- Date --}}
+        <div class="col-sm-6 mb-3">
+          <select class="custom-select ml-2" name="date">
+            <option value="">All Months</option>
+
+            {{#each monthOfYearSet}}
+            <option value="{{ this }}" {{#if (eq ../selectedDate this)}}selected{{/if}}>{{ this }}</option>
+            {{/each}}
+          </select>
+        </div>
+
+        {{!-- Category --}}
+        <div class="col-sm-6">
+          <select class="custom-select ml-2" name="category">
+            <option value="" selected>All Categories</option>
+
+            {{#each categoryList}}
+            <option value="{{ this.name }}" {{#if (eq ../selectedCategory this.name)}}selected{{/if}}>{{ this.name }}
+            </option>
+            {{/each}}
+
+          </select>
+        </div>
+
+      </form>
+    </div>
+
+
+    {{!-- Total amount --}}
+    <div class="mt-4 mb-3 mx-2 row">
+      <div class="col-md-3 text-center">
+        <h6 style=" color: #8c97a0;">Total amount:</h6>
+      </div>
+      <div class="col-md-5 text-info total-amount text-center">$ {{ totalAmount }}</div>
+    </div>
+
+
+
+    {{!-- Render list --}}
+    <div class="mx-2">
+      {{#each records}}
+      <div class="row flex-md-nowrap py-2 record" style="margin: 0;">
+        {{!-- Icon --}}
+        <div class="col-2 d-flex justify-content-center align-items-center">
+          <i class="{{ this.categoryId.icon }} fa-2x record-icon"></i>
+        </div>
+        {{!-- Name & date --}}
+        <div class="col-3 pl-3">
+          <h5 class="record-name">{{ this.name }}</h5>
+          <small>{{ this.date }}</small>
+        </div>
+        {{!-- Amount --}}
+        <div class="col-4 d-flex align-items-center justify-content-end">
+          <div class="d-flex flex-column align-items-end">
+            <h5 class="record-amount">${{ this.amount }}</h5>
+            <small class="text-muted">{{this.merchant}}</small>
+          </div>
+
+        </div>
+        {{!-- Buttons --}}
+        <div class="col-3 d-flex justify-content-center align-items-center">
+          <a href="/records/{{ this._id }}/edit" class="mr-2"><i class="fas fa-edit icon-edit"></i></a>
+          <form method="POST" action="/records/{{ this._id }}?_method=DELETE" class="record-delete"
+            onsubmit="return checkDelete()" style="margin: 0;">
+            <button type="submit" class="record-deleteBtn"><i class="fas fa-trash-alt icon-delete"></i></button>
+          </form>
+        </div>
+      </div>
+      {{/each}}
+      <div class="my-4 d-flex justify-content-center">
+        <a class="btn btn-info" href="/records/new">Add Expense</a>
+      </div>
+    </div>
+
+  </div>
+</div>
