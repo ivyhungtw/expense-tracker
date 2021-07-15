@@ -71,6 +71,11 @@ router.get('/', async (req, res) => {
       amountByMonth[date] = el.count
     })
 
+    // Category data
+    categoryList.forEach(category => {
+      category.amount = CategoryObject[category.name]
+    })
+
     return res.render('index', {
       monthOfYearSet,
       categoryList,
@@ -81,7 +86,8 @@ router.get('/', async (req, res) => {
       categoryAmount: Object.values(CategoryObject),
       chart: true,
       groupByMonth: Object.keys(amountByMonth),
-      amountByMonth: Object.values(amountByMonth)
+      amountByMonth: Object.values(amountByMonth),
+      home: true
     })
   } catch (err) {
     console.warn(err)

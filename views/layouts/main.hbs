@@ -62,12 +62,33 @@
   </header>
   <main>
     <div class="row">
-      <div class='{{#if isAuthenticated}}col-md-9{{else}}col-12{{/if}}' style="background: aliceblue;">
-
+      <div class='{{#if home}}col-md-7 col-lg-8 col-xl-9{{else}}col-12{{/if}}' style="background: aliceblue;">
         {{{body}}}
       </div>
+      {{#if home}}
+      <div class="col-md-5 col-lg-4 col-xl-3 py-5">
+        <div style="max-width: 250px;margin: 0 auto;">
+          <h5 class="category-title mt-5" style="    margin-left: -15px; font-weight: 600;">Categories</h5>
+          <div class="category-container mt-5">
+            {{#each categoryList}}
+            <div class="category row mb-4">
+              <div class="category-icon col-2 d-flex justify-content-center"
+                style="background: #1863e6;padding: 15px;border-radius: 10px; max-width: 50px;">
+                <i class="{{ this.icon }} fa-lg record-icon" style="color: white;"></i>
+              </div>
+              <div class="category-info col-10 row d-flex align-items-center">
+                <div class="col-8" style="font-weight: 500;">{{ this.name }}</div>
+                <div class="col-4">${{ this.amount }}</div>
+              </div>
+            </div>
+            {{/each}}
+          </div>
+        </div>
+      </div>
+      {{/if}}
     </div>
-    </div>
+
+
   </main>
 
   {{!-- Data for Chart --}}
