@@ -65,5 +65,8 @@ module.exports = {
       category.amount = categoryObject[category.name]
     })
     return categoryObject
+  },
+  formatAmount(...amount) {
+    return amount.map(el => new Intl.NumberFormat().format(el))
   }
 }
