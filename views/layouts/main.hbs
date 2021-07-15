@@ -71,6 +71,7 @@
           <h5 class="category-title mt-5" style="    margin-left: -15px; font-weight: 600;">Categories</h5>
           <div class="category-container mt-5">
             {{#each categoryList}}
+            {{#if (eq this.type 'expense')}}
             <div class="category row mb-4">
               <div class="category-icon col-2 d-flex justify-content-center"
                 style="background: #4ccfe6;padding: 15px;border-radius: 10px; max-width: 50px;">
@@ -81,6 +82,7 @@
                 <div class="col-4">${{ this.amount }}</div>
               </div>
             </div>
+            {{/if}}
             {{/each}}
           </div>
         </div>

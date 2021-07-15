@@ -22,8 +22,10 @@
             <option value="" selected>All Categories</option>
 
             {{#each categoryList}}
+            {{#if (eq this.type 'expense')}}
             <option value="{{ this.name }}" {{#if (eq ../selectedCategory this.name)}}selected{{/if}}>{{ this.name }}
             </option>
+            {{/if}}
             {{/each}}
 
           </select>

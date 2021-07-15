@@ -27,7 +27,7 @@ router.get('/expenses', async (req, res) => {
         ? new Set()
         : req.session.monthOfYearSet.split(' ')
     let totalAmount = 0
-    let filter = { userId }
+    let filter = { userId, type: 'expense' }
 
     let categoryList = await Category.find().lean().exec()
 
@@ -184,6 +184,8 @@ router.get('/', async (req, res) => {
 
     // Initiate variables
     let totalAmount = 0
+    let totalExpense = 0
+    let totalRevenue = 0
     const filter = { userId }
 
     // If there is no query string, return to home page
@@ -221,7 +223,13 @@ router.get('/', async (req, res) => {
       .exec()
     // Calculate total amount, and reassign date format
     filteredRecords.forEach(record => {
-      totalAmount += record.amount
+      if (record.type === 'expense') {
+        totalAmount -= record.amount
+        totalExpense += record.amount
+      } else if (record.type === 'revenue') {
+        totalAmount += record.amount
+        totalRevenue += record.amount
+      }
       record.date = moment.utc(record.date).format('YYYY-MM-DD')
     })
     // Format total amount
@@ -240,7 +248,9 @@ router.get('/', async (req, res) => {
       groupByMonth: Object.keys(amountByMonth),
       amountByMonth: Object.values(amountByMonth),
       chart: true,
-      home: true
+      home: true,
+      totalExpense,
+      totalRevenue
     })
   } catch (err) {
     console.warn(err)

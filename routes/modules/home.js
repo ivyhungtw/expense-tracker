@@ -22,6 +22,8 @@ router.get('/', async (req, res) => {
     const filter = { userId }
     const monthOfYearSet = new Set()
     let totalAmount = 0
+    let totalExpense = 0
+    let totalRevenue = 0
     const [records, categoryList, amountByMonth, amountByCategory] =
       await Promise.all([
         Record.find({ userId })
@@ -38,7 +40,13 @@ router.get('/', async (req, res) => {
 
     records.forEach(record => {
       // Calculate total amount
-      totalAmount += record.amount
+      if (record.type === 'expense') {
+        totalAmount -= record.amount
+        totalExpense += record.amount
+      } else if (record.type === 'revenue') {
+        totalAmount += record.amount
+        totalRevenue += record.amount
+      }
 
       const date = moment.utc(record.date)
       // Reassign date format to render record list
@@ -64,7 +72,9 @@ router.get('/', async (req, res) => {
       chart: true,
       groupByMonth: Object.keys(amountByMonth),
       amountByMonth: Object.values(amountByMonth),
-      home: true
+      home: true,
+      totalExpense,
+      totalRevenue
     })
   } catch (err) {
     console.warn(err)

@@ -1,7 +1,8 @@
 const Record = require('../models/record')
 
 module.exports = {
-  async getAmountByMonth(filter) {
+  async getAmountByMonth(filter, type) {
+    if (type) filter.type = type
     let amountByMonth = {}
     const result = await Record.aggregate([
       { $match: filter },
