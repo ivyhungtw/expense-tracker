@@ -34,14 +34,14 @@
       <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         {{#if isAuthenticated}}
         <ul class="navbar-nav d-flex align-items-center" style="list-style: none;margin: 0;">
-          <li class="nav-item active">
+          <li class="nav-item {{#unless type}}active{{/unless}}">
             <a class="nav-link" href="/">Overview <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/records/expense">Expense</a>
+            <a class="nav-link {{#if (eq type 'expense')}}active{{/if}}" href="/records/expense">Expense</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/records/revenue">Revenue</a>
+            <a class="nav-link {{#if (eq type 'revenue')}}active{{/if}}" href="/records/revenue">Revenue</a>
           </li>
           {{!-- Dropdown avatar --}}
           <div class="dropdown m-3 d-flex justify-content-end">
