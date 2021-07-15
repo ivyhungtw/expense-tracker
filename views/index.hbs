@@ -4,7 +4,7 @@
     {{!-- Tototal amount --}}
     <div class="mt-4 mb-5 mx-2 row"
       style="background: #f8f9fa;border-radius: 10px;box-shadow: 3px 4px 5px 0px #05119a14;">
-      <div class="col-md-6 col-lg-7 d-flex flex-column justify-content-center">
+      <div class="col-lg-6 d-flex flex-column justify-content-center">
 
         <div class="amount-container row">
           <div class="expense-container col-md-4 d-flex flex-column align-items-center my-2">
@@ -33,7 +33,7 @@
         </div>
 
       </div>
-      <div class="col-md-6 col-lg-5">
+      <div class="col-lg-6">
 
 
         <div class="chart-container p-2" style="max-width: 350px; margin: 0 auto; position:relative;">
@@ -105,7 +105,7 @@
         <div class="col-3 d-flex justify-content-center align-items-center">
           <a href="/records/{{ this._id }}/edit" class="mr-2"><i class="fas fa-edit icon-edit"></i></a>
           <form method="POST" action="/records/{{ this._id }}?_method=DELETE" class="record-delete"
-            onsubmit="return checkDelete()">
+            onsubmit="return checkDelete()" style="margin: 0;">
             <button type="submit" class="record-deleteBtn"><i class="fas fa-trash-alt icon-delete"></i></button>
           </form>
         </div>

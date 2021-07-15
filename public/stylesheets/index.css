@@ -1,6 +1,6 @@
 /* List */
 .record:nth-child(odd) {
-  background-color: aliceblue;
+  background-color: white;
 }
 
 .icon-delete {
