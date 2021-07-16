@@ -126,6 +126,9 @@ const userController = {
   },
   getUserProfile: (req, res) => {
     res.render('users/profile')
+  },
+  editUserProfile: (req, res) => {
+    res.render('users/edit')
   }
 }
 
