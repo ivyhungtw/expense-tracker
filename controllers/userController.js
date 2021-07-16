@@ -3,6 +3,20 @@ const passport = require('passport')
 
 const User = require('../models/user')
 
+const imgur = require('imgur-node-api')
+const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
+
+const uploadImg = path => {
+  return new Promise((resolve, reject) => {
+    imgur.upload(path, (err, img) => {
+      if (err) {
+        return reject(err)
+      }
+      resolve(img)
+    })
+  })
+}
+
 const userController = {
   getLoginPage: (req, res) => {
     res.render('login', {
@@ -129,6 +143,50 @@ const userController = {
   },
   editUserProfile: (req, res) => {
     res.render('users/edit')
+  },
+  putUserProfile: async (req, res) => {
+    const { file } = req
+    let img
+    const acceptedType = ['.png', '.jpg', '.jpeg']
+
+    if (!req.body.name || req.body.name.length > 25) {
+      return res.render('users/edit', {
+        user: { name: req.body.name },
+        error_msg: 'Name can not be empty or longer than 25 characters.'
+      })
+    }
+
+    try {
+      if (file) {
+        const fileType = file.originalname
+          .substring(file.originalname.lastIndexOf('.'))
+          .toLowerCase()
+
+        if (acceptedType.indexOf(fileType) === -1) {
+          req.flash(
+            'error_msg',
+            'This type of image is not accepted, Please upload the image ends with png, jpg, or jpeg. '
+          )
+          return res.redirect('back')
+        }
+
+        imgur.setClientID(IMGUR_CLIENT_ID)
+        img = await uploadImg(file.path)
+      }
+
+      let user = await User.findOne({ _id: req.user._id }).exec()
+
+      user = Object.assign(user, {
+        name: req.body.name,
+        avatar: file ? img.data.link : user.avatar
+      })
+
+      await user.save()
+
+      res.redirect('/users/profile')
+    } catch (err) {
+      console.log(err)
+    }
   }
 }
 
