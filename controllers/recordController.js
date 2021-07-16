@@ -28,6 +28,9 @@ const recordController = {
       let { type } = req.params
       let filter = type ? { userId, type } : { userId }
       let page = type ? 'records' : 'index'
+      const pageNumber = Number(req.query.page) || 1
+      const PAGE_LIMIT = 15
+      const offset = (pageNumber - 1) * PAGE_LIMIT
 
       let categoryList = await Category.find().lean().exec()
 
@@ -60,11 +63,20 @@ const recordController = {
       )
 
       // Filter records to render record list
-      const records = await Record.find(filter)
-        .populate('categoryId')
-        .lean()
-        .sort({ date: 'desc' })
-        .exec()
+      const [records, recordForPage] = await Promise.all([
+        Record.find(filter)
+          .populate('categoryId')
+          .lean()
+          .sort({ date: 'desc' })
+          .exec(),
+        Record.find(filter)
+          .populate('categoryId')
+          .lean()
+          .limit(PAGE_LIMIT)
+          .skip(offset)
+          .sort({ date: 'desc' })
+          .exec()
+      ])
 
       records.forEach(record => {
         // Calculate total amount
@@ -76,17 +88,21 @@ const recordController = {
           totalRevenue += record.amount
         }
 
+        const date = moment.utc(record.date)
+
+        if (!selectedCategory && !selectedDate) {
+          // Store different months of years to render year-month filter
+          monthOfYearSet.add(date.format('YYYY-MM'))
+        }
+      })
+
+      recordForPage.forEach(record => {
         // Format amount
         record.amount = formatAmount(record.amount)
 
         const date = moment.utc(record.date)
         // Reassign date format to render record list
         record.date = date.format('YYYY-MM-DD')
-
-        if (!selectedCategory && !selectedDate) {
-          // Store different months of years to render year-month filter
-          monthOfYearSet.add(date.format('YYYY-MM'))
-        }
       })
 
       if (!selectedCategory && !selectedDate) {
@@ -100,6 +116,14 @@ const recordController = {
         totalExpense,
         totalRevenue
       )
+
+      // data for pagination
+      const pages = Math.ceil(records.length / PAGE_LIMIT)
+      const totalPage = Array.from({ length: pages }).map(
+        (_, index) => index + 1
+      )
+      const prev = pageNumber - 1 < 1 ? 1 : pageNumber - 1
+      const next = pageNumber + 1 > pages ? pages : page + 1
 
       // Show warning messages to improver customer experience
       let beginner
@@ -128,7 +152,13 @@ const recordController = {
         totalExpense,
         totalRevenue,
         beginner,
-        noFilterResult
+        noFilterResult,
+        recordForPage,
+        totalPage,
+        prev,
+        next,
+        pages,
+        pageNumber
       })
     } catch (err) {
       console.warn(err)

@@ -74,7 +74,7 @@
 
     {{!-- Render list --}}
     <div class="mx-2">
-      {{#each records}}
+      {{#each recordForPage}}
       <div class="row flex-md-nowrap py-2 record" style="margin: 0;">
         {{!-- Icon --}}
         <div class="col-2 d-flex justify-content-center align-items-center">
@@ -103,8 +103,42 @@
         </div>
       </div>
       {{/each}}
+
+      {{#if records.length}}
+      {{!-- Pagination --}}
+      <div id="pagination" class="d-flex justify-content-center mt-4">
+        <nav aria-label="Page navigation example">
+          <ul class="pagination">
+            <li class="page-item {{#if (eq pageNumber prev)}}disabled{{/if}}">
+              <a class="page-link"
+                href="/records/{{type}}?page={{prev}}&date={{selectedDate}}&category={{selectedCategory}}"
+                aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            {{#each totalPage}}
+            {{#if (eq this ../pageNumber)}}
+            <li class="page-item active"><a class="page-link" href="#">{{this}}</a></li>
+            {{else}}
+            <li class="page-item"><a class="page-link"
+                href="/records/{{../type}}?page={{this}}&date={{../selectedDate}}&category={{../selectedCategory}}">{{this}}</a>
+            </li>
+            {{/if}}
+            {{/each}}
+            <li class="page-item {{#if (eq pageNumber next)}}disabled{{/if}}">
+              <a class="page-link"
+                href="/records/{{type}}?page={{next}}&date={{selectedDate}}&category={{selectedCategory}}"
+                aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      {{/if}}
+
       <div class="my-4 d-flex justify-content-center">
-        <a class="btn btn-info" href="/records/new?type={{type}}">Add {{type}}</a>
+        <a class="btn btn-info" href="/records/{{type}}/new?type={{type}}">Add {{type}}</a>
       </div>
     </div>
 
