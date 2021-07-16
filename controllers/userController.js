@@ -123,6 +123,9 @@ const userController = {
     req.session.email = ''
     req.session.password = ''
     res.redirect('/users/login')
+  },
+  getUserProfile: (req, res) => {
+    res.render('users/profile')
   }
 }
 
