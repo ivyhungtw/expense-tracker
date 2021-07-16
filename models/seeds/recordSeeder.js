@@ -11,13 +11,15 @@ const recordList = require('./records.json').results
 const User = require('../../models/user')
 const Category = require('../../models/category')
 
-const userRecordCount = 5
+const userRecordCount = 20
 const SEED_USERS = [
   {
+    name: 'user1',
     email: 'user1@example.com',
     password: '12345678'
   },
   {
+    name: 'user2',
     email: 'user2@example.com',
     password: '12345678'
   }
@@ -34,8 +36,10 @@ db.once('open', async () => {
         .then(salt => bcrypt.hash(seedUser.password, salt))
         .then(hash =>
           User.create({
+            name: seedUser.name,
             email: seedUser.email,
-            password: hash
+            password: hash,
+            avatar: `https://robohash.org/${seedUser.name}`
           })
         )
         .then(user => {
