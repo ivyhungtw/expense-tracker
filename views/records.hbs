@@ -1,5 +1,5 @@
 <div class="row py-5">
-  <div class="col-md-11 mx-auto">
+  <div class="col-md-11 mx-auto" style="max-width: 880px;">
 
     {{#if beginner}}
     <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -12,7 +12,7 @@
 
     {{#if noFilterResult}}
     <div class="alert alert-warning alert-dismissible fade show" role="alert">
-      No result found. Try to use other month or category filter.
+      No result found for the selected {{selectedDate}} {{selectedCategory}}. Try to use other month or category filter.
       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -62,7 +62,7 @@
       <div class="col-md-3 text-center">
         <h6 style=" color: #8c97a0;">Total {{type}}s:</h6>
       </div>
-      <div class="col-md-5 text-info total-amount text-center">$ {{ totalAmount }}
+      <div class="col-md-5 text-info total-amount text-center">${{ totalAmount }}
       </div>
     </div>
 
