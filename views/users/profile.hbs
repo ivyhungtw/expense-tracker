@@ -1,0 +1,18 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="m-4 d-flex justify-content-center align-items-center">
+        <img src="{{user.avatar}}" style="width: 200px;border-radius: 50%;box-shadow: 2px 3px 5px #495057eb;">
+      </div>
+    </div>
+    <div class="col-12 col-md-6 col-lg-8 d-flex flex-column justify-content-center pt-4 pb-5 ">
+      <div class="mb-3">
+        <h3>{{user.name}}</h3>
+        <p>{{user.email}}</p>
+      </div>
+      <div>
+        <a href="/users/profile/edit" class="btn btn-primary">edit</a>
+      </div>
+    </div>
+  </div>
+</div>
