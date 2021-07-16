@@ -1,0 +1,18 @@
+<div class="container my-5 mx-auto">
+  <form action="/users/profile?_method=PUT" method="POST" enctype="multipart/form-data">
+    {{> message}}
+    <div class="form--group">
+      <label for="inputName">Name</label>
+      <input type="text" name="name" class="form-control" placeholder="Name" id="inputName" value="{{ user.name }}"
+        maxlength="25" required autofocus>
+    </div>
+    <div class="form-group mt-3">
+      <label for="image">Image (.png, .jpg, .jpeg)</label>
+      <input type="file" class="form-control-file" id="image" name="image" accept=".png,.jpg,.jpeg">
+    </div>
+
+    <br />
+    <button class="btn btn-primary" type="submit">Submit</button>
+  </form>
+
+</div>
