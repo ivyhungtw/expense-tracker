@@ -47,7 +47,7 @@
           <div class="dropdown m-3 d-flex justify-content-end">
             <a class=" dropdown-toggle" style="text-decoration: none;" href="#" role="button" id="dropdownMenuLink"
               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <img src="https://picsum.photos/id/237/200/300" style="height: 30px;width: 30px;border-radius: 10px;"
+              <img src="https://robohash.org/{{user.avatar}}" style="height: 30px;width: 30px;border-radius: 10px;"
                 alt="">
             </a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
@@ -71,7 +71,8 @@
       {{#if home}}
       <div class="col-md-5 col-lg-4 col-xl-3 py-5">
         <div style="max-width: 250px; margin: 0 auto; position:sticky; top: 50px;">
-          <h5 class="category-title mt-5" style="    margin-left: -15px; font-weight: 600;">Categories</h5>
+          <h5 class="category-title mt-5" style="    margin-left: -15px; font-weight: 600; font-size: 1rem;">Categories
+          </h5>
           <div class="category-container mt-5">
             {{#each categoryList}}
             {{#if (eq this.type 'expense')}}

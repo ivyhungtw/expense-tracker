@@ -84,6 +84,7 @@ const userController = {
         )
         return res.redirect('/users/register')
       }
+
       // If not, generate hashed password,
       // and store user into user collection
       const salt = await bcrypt.genSalt(10)
@@ -91,7 +92,8 @@ const userController = {
       await User.create({
         name,
         email,
-        password: hash
+        password: hash,
+        avatar: `https://robohash.org/${name}`
       })
 
       // Save registered email in session to show it on login page
