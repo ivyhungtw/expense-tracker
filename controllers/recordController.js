@@ -32,7 +32,7 @@ const recordController = {
       const PAGE_LIMIT = 15
       const offset = (pageNumber - 1) * PAGE_LIMIT
 
-      let categoryList = await Category.find().lean().exec()
+      let categoryList = await Category.find({ type: 'expense' }).lean().exec()
 
       // Add query string to filter
       if (selectedCategory) {
