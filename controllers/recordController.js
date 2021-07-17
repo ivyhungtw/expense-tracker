@@ -41,62 +41,92 @@ const recordController = {
         )
         filter.categoryId = category._id
       }
-      if (selectedDate) {
-        const [year, month] = selectedDate.split('-')
-        const startDate = new Date(selectedDate)
-        const endDate = new Date(year, month, 0)
-        filter.date = {
-          $gte: startDate,
-          $lt: endDate
-        }
+
+      const amountByMonth = await getAmountByMonth(filter)
+      let currentDate = moment.utc(new Date()).format('YYYY-MM')
+      let filterDate
+
+      if (selectedDate !== 'all') {
+        filterDate = selectedDate ? selectedDate : currentDate
+        const [year, month] = filterDate.split('-')
+        filter.year = Number(year)
+        filter.month = Number(month)
       }
 
-      // Prepare chart data
-      const [amountByMonth, amountByCategory] = await Promise.all([
-        getAmountByMonth(filter),
-        getAmountByCategory(filter)
+      let records = await Record.aggregate([
+        {
+          $addFields: { year: { $year: '$date' }, month: { $month: '$date' } }
+        },
+        { $match: filter },
+        {
+          $lookup: {
+            from: 'categories',
+            localField: 'categoryId',
+            foreignField: '_id',
+            as: 'category'
+          }
+        },
+        { $unwind: '$category' },
+        {
+          $facet: {
+            metadata: [{ $count: 'total' }],
+            data: [{ $skip: offset }, { $limit: PAGE_LIMIT }],
+            data2: [{ $group: { _id: '$type', count: { $sum: '$amount' } } }],
+            data3: [
+              {
+                $group: {
+                  _id: { category: '$categoryId' },
+                  count: { $sum: '$amount' }
+                }
+              },
+              { $sort: { _id: 1 } }
+            ]
+          }
+        }
       ])
+
+      const metadata = records[0].metadata[0]
+      const amountData = records[0].data2
+      const categoryData = records[0].data3
+      const totalRecords = metadata ? metadata.total : 0
+
+      const pages = Math.ceil(totalRecords / PAGE_LIMIT)
+
+      amountData.forEach(data => {
+        if (data._id === 'expense') {
+          totalExpense -= data.count
+        } else if (data._id === 'revenue') {
+          totalRevenue += data.count
+        }
+      })
+      totalAmount = totalExpense + totalRevenue
+
+      let amountByCategory = {}
+      categoryData.forEach(el => {
+        let id = el._id.category
+        amountByCategory[id] = el.count
+      })
+
+      records = records[0].data
+
+      let groupByMonth = Object.keys(amountByMonth)
+      if (!selectedCategory && !selectedDate) {
+        // Store different months of years to render month filter
+        monthOfYearSet.add(currentDate)
+        groupByMonth.forEach(month => {
+          monthOfYearSet.add(month)
+        })
+
+        // Save months of years to session for later use
+        req.session.monthOfYearSet = [...monthOfYearSet].join(' ')
+      }
 
       const categoryObject = organizeCategoryData(
         categoryList,
         amountByCategory
       )
 
-      // Filter records to render record list
-      const [records, recordForPage] = await Promise.all([
-        Record.find(filter)
-          .populate('categoryId')
-          .lean()
-          .sort({ date: 'desc' })
-          .exec(),
-        Record.find(filter)
-          .populate('categoryId')
-          .lean()
-          .limit(PAGE_LIMIT)
-          .skip(offset)
-          .sort({ date: 'desc' })
-          .exec()
-      ])
-
       records.forEach(record => {
-        // Calculate total amount
-        if (record.type === 'expense') {
-          totalAmount -= record.amount
-          totalExpense -= record.amount
-        } else if (record.type === 'revenue') {
-          totalAmount += record.amount
-          totalRevenue += record.amount
-        }
-
-        const date = moment.utc(record.date)
-
-        if (!selectedCategory && !selectedDate) {
-          // Store different months of years to render year-month filter
-          monthOfYearSet.add(date.format('YYYY-MM'))
-        }
-      })
-
-      recordForPage.forEach(record => {
         // Format amount
         record.amount = formatAmount(record.amount)
 
@@ -104,11 +134,6 @@ const recordController = {
         // Reassign date format to render record list
         record.date = date.format('YYYY-MM-DD')
       })
-
-      if (!selectedCategory && !selectedDate) {
-        // Save months of years to session for later use
-        req.session.monthOfYearSet = [...monthOfYearSet].join(' ')
-      }
 
       // Format total amount
       ;[totalAmount, totalExpense, totalRevenue] = formatAmount(
@@ -118,7 +143,6 @@ const recordController = {
       )
 
       // data for pagination
-      const pages = Math.ceil(records.length / PAGE_LIMIT)
       const totalPage = Array.from({ length: pages }).map(
         (_, index) => index + 1
       )
@@ -134,6 +158,7 @@ const recordController = {
       if ((selectedCategory || selectedDate) && !records.length) {
         noFilterResult = true
       }
+
       return res.render(page, {
         monthOfYearSet,
         categoryList,
@@ -145,7 +170,7 @@ const recordController = {
         type,
         categoryName: Object.keys(categoryObject),
         categoryAmount: Object.values(categoryObject),
-        groupByMonth: Object.keys(amountByMonth),
+        groupByMonth,
         amountByMonth: Object.values(amountByMonth),
         chart: page === 'index' ? true : false,
         home: page === 'index' ? true : false,
@@ -153,12 +178,13 @@ const recordController = {
         totalRevenue,
         beginner,
         noFilterResult,
-        recordForPage,
         totalPage,
         prev,
         next,
         pages,
-        pageNumber
+        pageNumber,
+        filterDate,
+        totalRecords
       })
     } catch (err) {
       console.warn(err)
