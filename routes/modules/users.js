@@ -24,5 +24,7 @@ router.put(
   userController.putUserProfile
 )
 
+router.put('/budget', authenticator, userController.putBudget)
+
 // Export router
 module.exports = router

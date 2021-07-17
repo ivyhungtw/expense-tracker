@@ -187,6 +187,16 @@ const userController = {
     } catch (err) {
       console.log(err)
     }
+  },
+  putBudget: async (req, res) => {
+    let user = await User.findOne({ _id: req.user._id }).exec()
+
+    user = Object.assign(user, {
+      budget: req.body.budget
+    })
+
+    await user.save()
+    res.redirect('back')
   }
 }
 

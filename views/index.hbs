@@ -172,7 +172,8 @@
                       <div class="modal-body">
                         <form action="/users/budget?_method=PUT" method="POST">
                           <div class="form-group">
-                            <input type="number" class="form-control" value="{{budget}}" id="exampleInputBudget1">
+                            <input type="number" class="form-control" name="budget" value="{{budget}}"
+                              id="exampleInputBudget1">
                           </div>
                           <div class="modal-footer">
                             <button type="submit" class="btn btn-secondary" data-dismiss="modal">Close</button>

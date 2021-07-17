@@ -31,7 +31,7 @@ const recordController = {
       const pageNumber = Number(req.query.page) || 1
       const PAGE_LIMIT = 15
       const offset = (pageNumber - 1) * PAGE_LIMIT
-      const budget = 20000
+      const budget = req.user.budget
       let formattedBudget
 
       let categoryList = await Category.find({ type: 'expense' }).lean().exec()
