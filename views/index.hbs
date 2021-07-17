@@ -128,10 +128,14 @@
 
           <div class="pt-5">
             <div class="chart-name" style="position: absolute; top: 30px;">
-              <h5 style="font-weight: 500;">{{#if (eq selectedDate 'all')}}Category{{else}}Budget{{/if}}</h2>
+              <h5 style="font-weight: 500;">{{#if (eq selectedDate 'all')}}Category{{else}}{{#if
+                selectedCategory}}Category{{else}}Budget{{/if}}{{/if}}</h2>
 
             </div>
             {{#if (eq selectedDate 'all')}}
+            <canvas id="myChart" width="300" height="300"></canvas>
+            {{else}}
+            {{#if selectedCategory}}
             <canvas id="myChart" width="300" height="300"></canvas>
             {{else}}
             <div class="p-5">
@@ -189,6 +193,7 @@
               </div>
 
             </div>
+            {{/if}}
             {{/if}}
           </div>
         </div>
