@@ -3,7 +3,7 @@
 
     {{#if beginner}}
     <div class="alert alert-warning alert-dismissible fade show" role="alert">
-      You don't have any record yet. Try to <a href="/records/new?type={{type}}">add {{type}}</a> now!
+      You don't have any record in {{filterDate}} yet. Try to <a href="/records/new?type={{type}}">add {{type}}</a> now!
       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -28,10 +28,10 @@
         {{!-- Date --}}
         <div class="col-sm-6 mb-3">
           <select class="custom-select ml-2" name="date">
-            <option value="">All Months</option>
+            <option value="all">All Months</option>
 
             {{#each monthOfYearSet}}
-            <option value="{{ this }}" {{#if (eq ../selectedDate this)}}selected{{/if}}>{{ this }}</option>
+            <option value="{{ this }}" {{#if (eq ../filterDate this)}}selected{{/if}}>{{ this }}</option>
             {{/each}}
           </select>
         </div>
@@ -67,21 +67,21 @@
     </div>
 
     <div class="mb-2 mt-5 d-flex justify-content-center">
-      <a class="btn btn-info" href="/records/{{type}}/new?type={{type}}">Add {{type}}</a>
+      <a class="btn btn-info" href="/records/new?type={{type}}">Add {{type}}</a>
     </div>
 
     {{!-- Record count --}}
     <div class="mx-2 mb-3 d-flex justify-content-end">
-      <small style="font-weight:500">Found {{records.length}} {{type}}s</small>
+      <small style="font-weight:500">Found {{totalRecords}} {{type}}s</small>
     </div>
 
     {{!-- Render list --}}
     <div class="mx-2">
-      {{#each recordForPage}}
+      {{#each records}}
       <div class="row flex-md-nowrap py-2 record" style="margin: 0;">
         {{!-- Icon --}}
         <div class="col-2 d-flex justify-content-center align-items-center">
-          <i class="{{ this.categoryId.icon }} fa-2x record-icon"></i>
+          <i class="{{ this.category.icon }} fa-2x record-icon"></i>
         </div>
         {{!-- Name & date --}}
         <div class="col-3 pl-3">
