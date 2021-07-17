@@ -100,8 +100,13 @@
 
   {{!-- Data for Chart --}}
   {{#if chart}}
+  {{!-- Category Dought Chart --}}
   <span id="category-amount" style="display:none;" data-category="{{categoryAmount}}"></span>
   <span id="category-name" style="display:none;" data-category="{{categoryName}}"></span>
+  {{!-- Budget Dought Chart --}}
+  <span id="budget-amount" style="display:none;" data-budget="{{budgetAmount}}"></span>
+
+  {{!-- Month Bar Chart --}}
   <span id="month" style="display:none;" data-category="{{groupByMonth}}"></span>
   <span id="month-amount" style="display:none;" data-category="{{amountByMonth}}"></span>
   {{/if}}

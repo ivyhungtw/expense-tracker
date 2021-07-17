@@ -1,11 +1,15 @@
 const ctx = document.getElementById('myChart')
 const chart = document.getElementById('myCategory')
+const budgetCtx = document.getElementById('myBudget')
 const categoryAmount = document
   .getElementById('category-amount')
   .dataset.category.split(',')
 const categoryName = document
   .getElementById('category-name')
   .dataset.category.split(',')
+const budgetAmount = document
+  .getElementById('budget-amount')
+  .dataset.budget.split(',')
 const month = document.getElementById('month').dataset.category.split(',')
 const amountByMonth = document
   .getElementById('month-amount')
@@ -38,6 +42,33 @@ const doughnutPieData = {
   labels: categoryName
 }
 
+const budgetDoughnutPieData = {
+  datasets: [
+    {
+      data: budgetAmount,
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.5)',
+        'rgba(54, 162, 235, 0.5)',
+        'rgba(255, 206, 86, 0.5)',
+        'rgba(75, 192, 192, 0.5)',
+        'rgba(153, 102, 255, 0.5)',
+        'rgba(255, 159, 64, 0.5)'
+      ],
+      borderColor: [
+        'rgba(255,99,132,1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)'
+      ]
+    }
+  ],
+
+  // These labels appear in the legend and in the tooltips when hovering different arcs
+  labels: ['Spent', 'Remaining']
+}
+
 const doughnutPieOptions = {
   responsive: true,
   animation: {
@@ -58,10 +89,30 @@ const doughnutPieOptions = {
   }
 }
 
+const budgetDoughnutPieOptions = {
+  responsive: true,
+  animation: {
+    animateScale: true,
+    animateRotate: true
+  },
+  plugins: {
+    legend: {
+      display: false
+    }
+  }
+}
+
 const myChart = new Chart(ctx, {
   type: 'doughnut',
   data: doughnutPieData,
   options: doughnutPieOptions
+})
+
+// Budget
+const myBudgetChart = new Chart(budgetCtx, {
+  type: 'doughnut',
+  data: budgetDoughnutPieData,
+  options: budgetDoughnutPieOptions
 })
 
 const chartData = {

@@ -128,10 +128,68 @@
 
           <div class="pt-5">
             <div class="chart-name" style="position: absolute; top: 30px;">
-              <h5 style="font-weight: 500;">Category</h2>
+              <h5 style="font-weight: 500;">{{#if (eq selectedDate 'all')}}Category{{else}}Budget{{/if}}</h2>
 
             </div>
+            {{#if (eq selectedDate 'all')}}
             <canvas id="myChart" width="300" height="300"></canvas>
+            {{else}}
+            <div class="p-5">
+              <canvas id="myBudget" width="200" height="200"></canvas>
+            </div>
+            <div class="budget-data-container d-flex justify-content-between">
+              {{!-- Monthly Limit --}}
+              <div class="budget-container px-2 pb-3 d-flex flex-column align-items-center">
+                <h6>Monthly Limit</h6>
+                <div class="d-flex justify-content-center">
+                  <div>
+                    <span>${{formattedBudget}}</span>
+                  </div>
+                  <!-- Button trigger modal -->
+                  <div class="d-flex align-items-center">
+                    <button type="button" style="background: transparent;border: none;" data-toggle="modal"
+                      data-target="#exampleModal">
+                      <i class="fas fa-edit icon-edit" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                  aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Edit budget</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <form action="/users/budget?_method=PUT" method="POST">
+                          <div class="form-group">
+                            <input type="number" class="form-control" value="{{budget}}" id="exampleInputBudget1">
+                          </div>
+                          <div class="modal-footer">
+                            <button type="submit" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              {{!-- Remaining --}}
+              <div class="remaining-container px-2 pb-3 d-flex flex-column align-items-center">
+                <h6>Remaining</h6>
+                <span>${{remaining}}</span>
+
+              </div>
+
+            </div>
+            {{/if}}
           </div>
         </div>
       </div>

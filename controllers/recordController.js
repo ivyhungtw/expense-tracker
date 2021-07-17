@@ -31,6 +31,8 @@ const recordController = {
       const pageNumber = Number(req.query.page) || 1
       const PAGE_LIMIT = 15
       const offset = (pageNumber - 1) * PAGE_LIMIT
+      const budget = 20000
+      let formattedBudget
 
       let categoryList = await Category.find({ type: 'expense' }).lean().exec()
 
@@ -135,12 +137,14 @@ const recordController = {
         record.date = date.format('YYYY-MM-DD')
       })
 
+      // Data for budget chart
+      let spent = -totalExpense
+      let remaining = budget + totalExpense
+      let budgetAmount = [spent, remaining]
+
       // Format total amount
-      ;[totalAmount, totalExpense, totalRevenue] = formatAmount(
-        totalAmount,
-        totalExpense,
-        totalRevenue
-      )
+      ;[totalAmount, totalExpense, totalRevenue, formattedBudget, remaining] =
+        formatAmount(totalAmount, totalExpense, totalRevenue, budget, remaining)
 
       // data for pagination
       const totalPage = Array.from({ length: pages }).map(
@@ -170,6 +174,7 @@ const recordController = {
         type,
         categoryName: Object.keys(categoryObject),
         categoryAmount: Object.values(categoryObject),
+        budgetAmount,
         groupByMonth,
         amountByMonth: Object.values(amountByMonth),
         chart: page === 'index' ? true : false,
@@ -184,7 +189,10 @@ const recordController = {
         pages,
         pageNumber,
         filterDate,
-        totalRecords
+        totalRecords,
+        formattedBudget,
+        budget,
+        remaining
       })
     } catch (err) {
       console.warn(err)
