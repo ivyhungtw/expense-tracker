@@ -74,7 +74,15 @@
         <div style="max-width: 250px; margin: 0 auto; position:sticky; top: 50px;">
           <h5 class="category-title mt-5" style="    margin-left: -15px; font-weight: 600; font-size: 1rem;">Categories
           </h5>
-          <div class="category-container mt-5">
+          {{#unless selectedCategory}}
+          {{#unless (eq selectedDate 'all')}}
+          <div>
+            <canvas id="myChart" width="300" height="300"></canvas>
+          </div>
+          {{/unless}}
+          {{/unless}}
+
+          <div class="category-container {{#if selectedCategory}}mt-5{{/if}}{{#if (eq selectedDate 'all')}}mt-5{{/if}}">
             {{#each categoryList}}
             {{#if (eq this.type 'expense')}}
             <div class="category row mb-4">
@@ -90,6 +98,7 @@
             {{/if}}
             {{/each}}
           </div>
+
         </div>
       </div>
       {{/if}}
