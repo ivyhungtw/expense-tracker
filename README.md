@@ -17,18 +17,23 @@ password: 12345678
 - Log in with email or Facebook account
 - Log out of an account
 
-After login, a user can:
+After login, users can:
 
-- View all expenses
-- View total amount of expenses
+- View all expenses/revenues
+- View total amount of expenses/revenues/balance
+- View expenses break down by category and month in chart visualizations
+- View monthly spent and remaining budget in pie chart
 - Filter expenses by category and month
-- Add an expense
-- Edit an expense
-- Delete an expense
+- Filter revenues by month
+- Add an expense and a revenue
+- Edit their expense, revenue, budget, avatar, and name
+- Delete an expense and a revenue
 
 ![Home page](/public/photos/index.png)
 ![Login page](/public/photos/login.png)
 ![Register page](/public/photos/register.png)
+![Expenses page](/public/photos/expenses.png)
+![Revenues page](/public/photos/revenues.png)
 
 ## Prerequisites
 
