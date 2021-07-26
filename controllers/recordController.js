@@ -45,7 +45,7 @@ const recordController = {
       }
 
       const amountByMonth = await getAmountByMonth(filter)
-      let currentDate = moment.utc(new Date()).format('YYYY-MM')
+      let currentDate = moment.utc(new Date()).format('YYYY-M')
       let filterDate
 
       if (selectedDate !== 'all') {
@@ -122,7 +122,6 @@ const recordController = {
         // Save months of years to session for later use
         req.session.monthOfYearSet = [...monthOfYearSet].join(' ')
       }
-
       const categoryObject = organizeCategoryData(
         categoryList,
         amountByCategory
