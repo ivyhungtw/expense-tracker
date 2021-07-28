@@ -51,6 +51,8 @@ module.exports = app => {
       (accessToken, refreshToken, profile, done) => {
         const { email, name, id, picture } = profile._json
 
+        console.log('profile', profile)
+
         return User.findOne({ $or: [{ email }, { facebookId: id }] }).then(
           user => {
             // If user already exists in User model, return user
