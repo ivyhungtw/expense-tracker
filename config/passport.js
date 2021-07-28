@@ -49,32 +49,34 @@ module.exports = app => {
         profileFields: ['id', 'email', 'displayName', 'picture.type(large)']
       },
       (accessToken, refreshToken, profile, done) => {
-        const { email, name, id, photos } = profile._json
-        console.log('profile._json', profile._json)
-        return User.findOne({ $or: [email, { facebookId: id }] }).then(user => {
-          // If user already exists in User model, return user
-          if (user) {
-            return done(null, user)
+        const { email, name, id, picture } = profile._json
+
+        return User.findOne({ $or: [{ email }, { facebookId: id }] }).then(
+          user => {
+            // If user already exists in User model, return user
+            if (user) {
+              return done(null, user)
+            }
+            // If user doesn't exist, create a user and save to User model
+            // because password field is required in the model,
+            // we have to generate a random password for it
+            const randomPassword = Math.random().toString(36).slice(-8)
+            return bcrypt
+              .genSalt(10)
+              .then(salt => bcrypt.hash(randomPassword, salt))
+              .then(hash =>
+                User.create({
+                  name,
+                  email,
+                  password: hash,
+                  facebookId: id,
+                  avatar: picture.data.url || `https://robohash.org/${name}`
+                })
+              )
+              .then(user => done(null, user))
+              .catch(err => console.log(err))
           }
-          // If user doesn't exist, create a user and save to User model
-          // because password field is required in the model,
-          // we have to generate a random password for it
-          const randomPassword = Math.random().toString(36).slice(-8)
-          return bcrypt
-            .genSalt(10)
-            .then(salt => bcrypt.hash(randomPassword, salt))
-            .then(hash =>
-              User.create({
-                name,
-                email,
-                password: hash,
-                facebookId: id,
-                avatar: photos[0].value || `https://robohash.org/${name}`
-              })
-            )
-            .then(user => done(null, user))
-            .catch(err => console.log(err))
-        })
+        )
       }
     )
   )
