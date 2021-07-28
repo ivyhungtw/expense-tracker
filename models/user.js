@@ -25,6 +25,9 @@ const userSchema = new Schema({
     required: true,
     default: 20000
   },
+  googleId: {
+    type: String
+  },
   createdAt: {
     type: Date,
     default: Date.now
