@@ -28,6 +28,9 @@ const userSchema = new Schema({
   googleId: {
     type: String
   },
+  facebookId: {
+    type: String
+  },
   createdAt: {
     type: Date,
     default: Date.now

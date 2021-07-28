@@ -46,11 +46,12 @@ module.exports = app => {
         clientID: process.env.FACEBOOK_ID,
         clientSecret: process.env.FACEBOOK_SECRET,
         callbackURL: process.env.FACEBOOK_CALLBACK,
-        profileFields: ['email', 'displayName']
+        profileFields: ['id', 'email', 'displayName', 'picture.type(large)']
       },
       (accessToken, refreshToken, profile, done) => {
-        const { email, name } = profile._json
-        return User.findOne({ email }).then(user => {
+        const { email, name, id, photos } = profile._json
+        console.log('profile._json', profile._json)
+        return User.findOne({ $or: [email, { facebookId: id }] }).then(user => {
           // If user already exists in User model, return user
           if (user) {
             return done(null, user)
@@ -62,7 +63,15 @@ module.exports = app => {
           return bcrypt
             .genSalt(10)
             .then(salt => bcrypt.hash(randomPassword, salt))
-            .then(hash => User.create({ name, email, password: hash }))
+            .then(hash =>
+              User.create({
+                name,
+                email,
+                password: hash,
+                facebookId: id,
+                avatar: photos[0].value || `https://robohash.org/${name}`
+              })
+            )
             .then(user => done(null, user))
             .catch(err => console.log(err))
         })
