@@ -4,17 +4,19 @@
       <h1 class="text-center mt-3">Register</h1>
       {{> message}}
       <form action="/users/register" method="POST">
-      <div class="form-group mt-3">
+        <div class="form-group mt-3">
           <label for="name">Name</label>
           <input type="text" id="name" name="name" class="form-control" placeholder="Enter Name" value="{{ name }}">
         </div>
         <div class="form-group mt-3">
           <label for="email">Email<span class="field-required">*</span> </label>
-          <input type="email" id="email" name="email" class="form-control" placeholder="Enter Email" value="{{ email }}" required>
+          <input type="email" id="email" name="email" class="form-control" placeholder="Enter Email" value="{{ email }}"
+            required>
         </div>
         <div class="form-group mt-3">
           <label for="password">Password<span class="field-required">*</span></label>
-          <input type="password" id="password" name="password" class="form-control" placeholder="Enter Password" value="{{ password }}" minlength="6" maxlength="20" required>
+          <input type="password" id="password" name="password" class="form-control" placeholder="Enter Password"
+            value="{{ password }}" minlength="6" maxlength="20" required>
         </div>
         <div class="form-group mt-3">
           <label for="confirmPassword">Confirm Password<span class="field-required">*</span></label>
@@ -23,6 +25,7 @@
         </div>
         <button type="submit" class="btn btn-primary btn-block mt-4">Register</button>
         <a href="/auth/facebook" class="btn btn-info btn-block">Facebook Login</a>
+        <a href="/auth/google" class="btn btn-outline-info btn-block">Google Login</a>
       </form>
       <p class="lead mt-4">
         Already have an account? <a href="/users/login">Login</a>

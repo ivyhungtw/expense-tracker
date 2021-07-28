@@ -30,8 +30,8 @@ After login, users can:
 - Delete an expense and a revenue
 
 ![Home page](/public/photos/index.png)
-![Login page](/public/photos/login.png)
-![Register page](/public/photos/register.png)
+![Login page](/public/photos/login-new.png)
+![Register page](/public/photos/register-new.png)
 ![Expenses page](/public/photos/expenses.png)
 ![Revenues page](/public/photos/revenues.png)
 
