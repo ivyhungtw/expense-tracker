@@ -2,6 +2,9 @@
 const express = require('express')
 const router = express.Router()
 
+const userController = require('../../controllers/userController')
+const { authenticator } = require('../../middleware/auth')
+
 const passport = require('passport')
 
 // Define routes
@@ -20,6 +23,8 @@ router.get(
     failureRedirect: '/users/login'
   })
 )
+
+router.get('/facebook/delete', authenticator, userController.deleteUser)
 
 router.get(
   '/google',

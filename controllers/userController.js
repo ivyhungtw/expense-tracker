@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs')
 const passport = require('passport')
 
 const User = require('../models/user')
+const Record = require('../models/record')
 
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
@@ -196,6 +197,16 @@ const userController = {
     })
 
     await user.save()
+    res.redirect('back')
+  },
+  deleteUser: async (req, res) => {
+    if (req.user && req.user.facebookId) {
+      await Promise.all([
+        User.deleteOne({ facebookId: req.user.facebookId }),
+        Record.deleteMany({ userId: req.user.id })
+      ])
+      return res.redirect('/users/login')
+    }
     res.redirect('back')
   }
 }
