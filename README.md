@@ -4,7 +4,7 @@ Expense Tracker is a simple RESTful web application built with Node.js, Express,
 
 This project is Live on: https://sleepy-cliffs-84117.herokuapp.com/
 
-You can use the default accounts below or register an account to login.
+You can use the default accounts below, register an account, or use your Facebook/Google account to login.
 
 ```
 email: user1@example.com/user2@example.com
@@ -14,7 +14,7 @@ password: 12345678
 ## Features
 
 - Sign up for an account by providing name, email, and password
-- Log in with email or Facebook account
+- Log in with email, Facebook, or Google account
 - Log out of an account
 
 After login, users can:
