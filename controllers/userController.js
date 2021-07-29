@@ -27,28 +27,6 @@ const userController = {
       formCSS: true
     })
   },
-  login: (req, res, next) => {
-    // Use passport custom callback
-    passport.authenticate('local', function (err, user, info) {
-      if (err) {
-        return next(err)
-      }
-      if (!user) {
-        // Create error message to show on login page
-        req.flash('error', info.message)
-        // Store user email and password in session to show on login page
-        req.session.email = req.body.email
-        req.session.password = req.body.password
-        return res.redirect('/users/login')
-      }
-      req.logIn(user, function (err) {
-        if (err) {
-          return next(err)
-        }
-        return res.redirect('/')
-      })
-    })(req, res, next)
-  },
   getRegisterPage: (req, res) => {
     res.render('register', { email: req.session.email, formCSS: true })
   },
