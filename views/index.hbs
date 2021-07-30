@@ -56,18 +56,20 @@
     {{#if home}}
     <div class="mt-4 mb-5 mx-2 row"
       style="background: white;border-radius: 10px;box-shadow: 3px 4px 5px 0px #05119a14;">
-      <div class="col-lg-6 d-flex flex-column justify-content-around">
+      <div class="col-lg-7 d-flex flex-column justify-content-around">
 
-        <div class="amount-container row">
-          <div class="expense-container col-4 d-flex flex-column align-items-center my-2 pt-4">
-            <div>
-              <div class="pb-3 pt-4 pl-1">
-                <span style="background: white;box-shadow: 0px 4px 4px 1px #a8bfd25c;border-radius: 50%;" class="p-2">
-                  <i class="fas fa-comment-dollar fa-lg" style="color: #ff4800ed;"></i>
-                </span>
-              </div>
-              <div>
-                <span><i class="fas fa-dollar-sign fa-xs"></i></span>
+        <div class="amount-container row justify-content-center">
+
+          <div class="expense-container col-12 col-sm-3 col-lg-4 my-2 pt-4 row justify-content-center">
+
+            <div class="pb-3 pt-4 col-auto col-sm-12 d-flex flex-column justify-content-center align-items-center">
+              <span style="background: white;box-shadow: 0px 4px 4px 1px #a8bfd25c;border-radius: 50%;" class="p-2">
+                <i class="fas fa-comment-dollar fa-lg" style="color: #ff4800ed;"></i>
+              </span>
+            </div>
+            <div class="col-auto col-sm-12 d-flex flex-column justify-content-center align-items-center">
+              <div class="d-flex align-items-center">
+                <i class="fas fa-dollar-sign fa-xs mr-1 "></i>
                 <span style="font-weight: 500;">{{ totalExpense }}</span>
               </div>
               <div>
@@ -76,16 +78,18 @@
                 </span>
               </div>
             </div>
+
           </div>
-          <div class="total-container col-4 d-flex flex-column align-items-center my-2 pt-4">
-            <div>
-              <div class="pb-3 pt-4 pl-1">
-                <span style="background: white;box-shadow: 0px 4px 4px 1px #a8bfd25c;border-radius: 50%;" class="p-2">
-                  <i class="fas fa-comment-dollar fa-lg" style="color: #3877e4;"></i>
-                </span>
-              </div>
-              <div>
-                <span><i class="fas fa-dollar-sign fa-xs"></i></span>
+          <div class="balance-container col-12 col-sm-3 col-lg-4 my-2 pt-4 row justify-content-center">
+
+            <div class="pb-3 pt-4 col-auto col-sm-12 d-flex flex-column justify-content-center align-items-center">
+              <span style="background: white;box-shadow: 0px 4px 4px 1px #a8bfd25c;border-radius: 50%;" class="p-2">
+                <i class="fas fa-comment-dollar fa-lg" style="color: #3877e4;"></i>
+              </span>
+            </div>
+            <div class="col-auto col-sm-12 d-flex flex-column justify-content-center align-items-center">
+              <div class="d-flex align-items-center">
+                <i class="fas fa-dollar-sign fa-xs mr-1"></i>
                 <span style="font-weight: 500;">{{ totalAmount }}</span>
               </div>
               <div>
@@ -94,16 +98,18 @@
                 </span>
               </div>
             </div>
+
           </div>
-          <div class="total-revenue col-4 d-flex flex-column align-items-center my-2 pt-4">
-            <div>
-              <div class="pb-3 pt-4 pl-1">
-                <span style="background: white;box-shadow: 0px 4px 4px 1px #a8bfd25c;border-radius: 50%;" class="p-2">
-                  <i class="fas fa-comment-dollar fa-lg" style="color: #03bf7a"></i>
-                </span>
-              </div>
-              <div>
-                <span><i class="fas fa-dollar-sign fa-xs"></i></span>
+          <div class="revenue-container col-12 col-sm-3 col-lg-4 my-2 pt-4 row justify-content-center">
+
+            <div class="pb-3 pt-4 col-auto col-sm-12 d-flex flex-column justify-content-center align-items-center">
+              <span style="background: white;box-shadow: 0px 4px 4px 1px #a8bfd25c;border-radius: 50%;" class="p-2">
+                <i class="fas fa-comment-dollar fa-lg" style="color: #03bf7a"></i>
+              </span>
+            </div>
+            <div class="col-auto col-sm-12 d-flex flex-column justify-content-center align-items-center">
+              <div class="d-flex align-items-center">
+                <i class="fas fa-dollar-sign fa-xs mr-1"></i>
                 <span style="font-weight: 500;">{{ totalRevenue }}</span>
               </div>
               <div>
@@ -112,6 +118,7 @@
                 </span>
               </div>
             </div>
+
           </div>
         </div>
         <div class="chart-category m-3">
@@ -121,30 +128,34 @@
         </div>
 
       </div>
-      <div class="col-lg-6">
+      <div class="col-lg-5">
 
 
         <div class="chart-container p-2" style="max-width: 350px; margin: 0 auto; position:relative;">
 
-          <div class="pt-5">
+          <div class="pt-4">
             <div class="chart-name" style="position: absolute; top: 30px;">
               <h5 style="font-weight: 500;">{{#if (eq selectedDate 'all')}}Category{{else}}{{#if
                 selectedCategory}}Category{{else}}Budget{{/if}}{{/if}}</h2>
 
             </div>
             {{#if (eq selectedDate 'all')}}
-            <canvas id="myChart" width="300" height="300"></canvas>
+            <div class="pt-5">
+              <canvas id="myChart" width="300" height="300"></canvas>
+            </div>
             {{else}}
             {{#if selectedCategory}}
-            <canvas id="myChart" width="300" height="300"></canvas>
+            <div class="pt-5">
+              <canvas id="myChart" width="300" height="300"></canvas>
+            </div>
             {{else}}
-            <div class="p-5">
+            <div class="p-4 pt-5">
               <canvas id="myBudget" width="200" height="200"></canvas>
             </div>
             <div class="budget-data-container d-flex justify-content-between">
               {{!-- Monthly Limit --}}
-              <div class="budget-container px-2 pb-3 d-flex flex-column align-items-center">
-                <h6>Monthly Limit</h6>
+              <div class="budget-container pe-2 pb-3 d-flex flex-column align-items-center">
+                <h6 style="font-size: 1rem; font-weight: 600">Monthly Limit</h6>
                 <div class="d-flex justify-content-center">
                   <div>
                     <span>${{formattedBudget}}</span>
@@ -188,7 +199,7 @@
               </div>
               {{!-- Remaining --}}
               <div class="remaining-container px-2 pb-3 d-flex flex-column align-items-center">
-                <h6>Remaining</h6>
+                <h6 style="font-size: 1rem; font-weight: 600">Remaining</h6>
                 <span>${{remaining}}</span>
 
               </div>

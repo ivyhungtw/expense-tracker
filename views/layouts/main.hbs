@@ -66,37 +66,47 @@
   </header>
   <main>
     <div class="row">
-      <div class='{{#if home}}col-md-7 col-lg-8 col-xl-9{{else}}col-12{{/if}}' style="background: aliceblue;">
+
+      <div class='{{#if home}}col-12 col-xl-8{{else}}col-12{{/if}}' style="background: aliceblue;">
         {{{body}}}
       </div>
-      {{#if home}}
-      <div class="col-md-5 col-lg-4 col-xl-3 py-5">
-        <div style="max-width: 250px; margin: 0 auto; position:sticky; top: 50px;">
-          <h5 class="category-title mt-5" style="    margin-left: -15px; font-weight: 600; font-size: 1rem;">Categories
-          </h5>
-          {{#unless selectedCategory}}
-          {{#unless (eq selectedDate 'all')}}
-          <div>
-            <canvas id="myChart" width="300" height="300"></canvas>
-          </div>
-          {{/unless}}
-          {{/unless}}
 
-          <div class="category-container {{#if selectedCategory}}mt-5{{/if}}{{#if (eq selectedDate 'all')}}mt-5{{/if}}">
-            {{#each categoryList}}
-            {{#if (eq this.type 'expense')}}
-            <div class="category row mb-4">
-              <div class="category-icon col-2 d-flex justify-content-center"
-                style="background: #4ccfe6;padding: 15px;border-radius: 10px; max-width: 50px;">
-                <i class="{{ this.icon }} fa-lg record-icon" style="color: white;"></i>
-              </div>
-              <div class="category-info col-10 row d-flex align-items-center">
-                <div class="col-8" style="font-weight: 500;">{{ this.name }}</div>
-                <div class="col-4">${{ this.amount }}</div>
+      {{#if home}}
+      <div class="col-12 col-xl-4 py-5 pl-5 row" style="margin-left: 0.5rem;">
+        <div class="col-11 mx-auto" style=" margin: 0 auto; position:sticky; top: 50px;">
+          <div class="category-title mt-5">
+            <h5 class="" style="margin-left: -15px; font-weight: 600; font-size: 1.2rem;">
+              Expenses by Category
+            </h5>
+          </div>
+          <div class="row">
+            {{#unless selectedCategory}}
+            {{#unless (eq selectedDate 'all')}}
+            <div class="col-md-6 col-xl-12">
+              <div class="mx-auto" style="max-width: 400px;">
+                <canvas id="myChart" width="300" height="300"></canvas>
               </div>
             </div>
-            {{/if}}
-            {{/each}}
+            {{/unless}}
+            {{/unless}}
+
+            <div
+              class="category-container col-md-6 col-xl-12 {{#if selectedCategory}}mt-5{{/if}}{{#if (eq selectedDate 'all')}} mt-5{{/if}} ">
+              {{#each categoryList}}
+              {{#if (eq this.type 'expense')}}
+              <div class="category row mb-4 mx-auto">
+                <div class="category-icon col-2 d-flex justify-content-center"
+                  style="background: #4ccfe6;padding: 15px;border-radius: 10px; max-width: 50px;">
+                  <i class="{{ this.icon }} fa-lg record-icon" style="color: white;"></i>
+                </div>
+                <div class="category-info col-10 row d-flex align-items-center">
+                  <div class="col-12 col-sm-8 col-lg-8 col-xl-12" style="font-weight: 500;">{{ this.name }}</div>
+                  <div class="col-12 col-sm-4 col-lg-4 col-xl-12">${{ this.amount }}</div>
+                </div>
+              </div>
+              {{/if}}
+              {{/each}}
+            </div>
           </div>
 
         </div>
