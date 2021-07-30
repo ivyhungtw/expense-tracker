@@ -1,5 +1,7 @@
 # Expense Tracker
 
+![expense-tracker](/public/photos/expense-tracker.gif)
+
 Expense Tracker is a simple RESTful web application built with Node.js, Express, and mongoDB for users to track daily expenses.
 
 This project is Live on: https://sleepy-cliffs-84117.herokuapp.com/
@@ -29,6 +31,7 @@ After login, users can:
 - Edit their expense, revenue, budget, avatar, and name
 - Delete an expense and a revenue
 
+![RWD](/public/photos/expense-tracker-RWD.gif)
 ![Home page](/public/photos/index.png)
 ![Login page](/public/photos/login-new.png)
 ![Register page](/public/photos/register-new.png)
