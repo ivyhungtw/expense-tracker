@@ -2,7 +2,16 @@
 const express = require('express')
 const session = require('express-session')
 const redis = require('redis')
-const client = redis.createClient()
+const client =
+  process.env.NODE_ENV === 'production'
+    ? redis.createClient(
+        `redis://${process.env.REDIS_ENDPOINT_URI.replace(
+          /^(redis\:\/\/)/,
+          ''
+        )}`,
+        { password: process.env.REDIS_PASSWORD }
+      )
+    : redis.createClient()
 const redisStore = require('connect-redis')(session)
 const exphbs = require('express-handlebars')
 
@@ -42,18 +51,14 @@ client.on('connect', function (err) {
 
 app.use(
   session({
-    store:
-      process.env.NODE_ENV === 'production'
-        ? new redisStore({ url: process.env.REDIS_ENDPOINT_URI })
-        : new redisStore({ client }),
+    store: new redisStore({ client }),
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
       sameSite: true,
       secure: false,
-      httpOnly: false,
-      maxAge: 1000 * 60 * 10 // 10 minutes
+      httpOnly: false
     }
   })
 )
