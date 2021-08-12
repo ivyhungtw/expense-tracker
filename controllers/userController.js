@@ -113,8 +113,11 @@ const userController = {
     req.logout()
     req.flash('success_msg', 'logout successfully!')
     // Reset email & password stored in session
-    req.session.email = ''
-    req.session.password = ''
+    req.session.destroy(err => {
+      if (err) {
+        return console.log(err)
+      }
+    })
     res.redirect('/users/login')
   },
   getUserProfile: (req, res) => {

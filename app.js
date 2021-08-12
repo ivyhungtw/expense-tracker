@@ -7,7 +7,6 @@ const redisStore = require('connect-redis')(session)
 const exphbs = require('express-handlebars')
 
 const flash = require('connect-flash')
-const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
@@ -33,6 +32,14 @@ app.engine(
 app.set('view engine', 'hbs')
 
 // Handle session
+client.on('connect', function (err) {
+  if (err) {
+    console.log('Could not establish a connection with Redis. ' + err)
+  } else {
+    console.log('Connected to Redis successfully!')
+  }
+})
+
 app.use(
   session({
     store:
@@ -50,14 +57,6 @@ app.use(
     }
   })
 )
-
-// app.use(
-//   session({
-//     secret: process.env.SESSION_SECRET,
-//     resave: false,
-//     saveUninitialized: true
-//   })
-// )
 
 // Set up body-parser
 app.use(express.json())
