@@ -1,6 +1,9 @@
 // Require packages
 const express = require('express')
 const session = require('express-session')
+const redis = require('redis')
+const client = redis.createClient()
+const redisStore = require('connect-redis')(session)
 const exphbs = require('express-handlebars')
 
 const flash = require('connect-flash')
@@ -32,14 +35,33 @@ app.set('view engine', 'hbs')
 // Handle session
 app.use(
   session({
+    store:
+      process.env.NODE_ENV === 'production'
+        ? new redisStore({ url: process.env.REDIS_ENDPOINT_URI })
+        : new redisStore({ client }),
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: false,
+    cookie: {
+      sameSite: true,
+      secure: false,
+      httpOnly: false,
+      maxAge: 1000 * 60 * 10 // 10 minutes
+    }
   })
 )
 
+// app.use(
+//   session({
+//     secret: process.env.SESSION_SECRET,
+//     resave: false,
+//     saveUninitialized: true
+//   })
+// )
+
 // Set up body-parser
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
 // Set up method-override
 app.use(methodOverride('_method'))
