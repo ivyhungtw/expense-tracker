@@ -56,15 +56,21 @@ module.exports = {
     return amountByCategory
   },
   organizeCategoryData(categoryList, amountByCategory) {
-    const categoryObject = Object.assign(
-      ...categoryList.map(category => ({
-        [category.name]: amountByCategory[category._id] || 0
-      }))
-    )
-    categoryList.forEach(category => {
-      category.amount = categoryObject[category.name]
-    })
-    return categoryObject
+    try {
+      const categoryObject = Object.assign(
+        ...categoryList.map((category) => ({
+          [category.name]: amountByCategory[category._id] || 0,
+        }))
+      );
+      categoryList.forEach((category) => {
+        category.amount = categoryObject[category.name];
+      });
+      return categoryObject;
+    } catch (error) {
+      console.error(`[records] [organizeCategoryData] error ${error?.message}`, error?.stack);
+
+      return [];
+    }
   },
   formatAmount(...amount) {
     return amount.map(el => new Intl.NumberFormat().format(el))
